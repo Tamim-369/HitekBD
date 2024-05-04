@@ -1,0 +1,32 @@
+.animate-hero {
+  animation: slideUp 2s forwards ease-in; /* Animation duration and timing */
+  opacity: 0; /* Initially invisible */
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-bg-1 {
+  animation: moveLeft 20s linear infinite;
+  overflow: hidden;
+}
+
+.animate-bg-2 {
+  animation: moveLeft 20s linear infinite;
+  overflow: hidden;
+}
+
+@keyframes moveLeft {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
