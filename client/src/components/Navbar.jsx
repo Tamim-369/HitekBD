@@ -7,7 +7,7 @@ import { AiOutlineUser } from "react-icons/ai";
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const checkLocation = useLocation().pathname;
-  const email = localStorage.getItem("email");
+  const token = localStorage.getItem("token");
   return (
     <nav
       className={` fixed w-full   border-b z-50 	 ${
@@ -133,15 +133,7 @@ const Navbar = () => {
               >
                 About
               </Link>
-              {email ? (
-                <Link
-                  onClick={() => setIsOpen(false)}
-                  className="my-2 font-medium transition-colors duration-300 transform hover:text-red-200 shadow-md shadow-gray-400 text-sm flex justify-center items-center smd:mx-3 smd:my-1 smd:text-left text-center bg-red-600 text-white  py-2 smd:py-1 px-2 rounded-md "
-                  to="/signin"
-                >
-                  Sign in
-                </Link>
-              ) : (
+              {token ? (
                 <Link
                   to={"/profile"}
                   className="my-2 font-medium transition-colors duration-300 transform hover:text-red-200 shadow-md shadow-gray-400 text-sm flex justify-center items-center smd:mx-3 smd:my-1 smd:text-left text-center bg-red-600 text-white  py-2 smd:py-1 px-2 rounded-md"
@@ -152,6 +144,14 @@ const Navbar = () => {
                     </div>
                     <div>Profile</div>
                   </div>
+                </Link>
+              ) : (
+                <Link
+                  onClick={() => setIsOpen(false)}
+                  className="my-2 font-medium transition-colors duration-300 transform hover:text-red-200 shadow-md shadow-gray-400 text-sm flex justify-center items-center smd:mx-3 smd:my-1 smd:text-left text-center bg-red-600 text-white  py-2 smd:py-1 px-2 rounded-md "
+                  to="/signin"
+                >
+                  Sign in
                 </Link>
               )}
             </div>
