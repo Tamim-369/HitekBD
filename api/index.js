@@ -23,12 +23,12 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "client/dist")));
+
+app.use("/api/products", productRouter);
+app.use("/api/users", userRouter);
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
-app.use("/api/products", productRouter);
-app.use("/api/users", userRouter);
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
