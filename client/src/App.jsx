@@ -20,6 +20,8 @@ import AdminAuth from "./pages/AdminAuth";
 import Confirm from "./pages/Confirm";
 import Orders from "./pages/Orders";
 import Details from "./pages/Details";
+import Reset from "./pages/Reset";
+import CompleteReset from "./pages/CompleteReset";
 function App() {
   const getUser = async (email) => {
     const response = await fetch(`/api/users/find/${email}`, {
@@ -51,6 +53,11 @@ function App() {
           <Route path="/confirm" element={<Confirm />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/details" element={<Details getUser={getUser} />} />
+          <Route path="/reset" element={<Reset getUser={getUser} />} />
+          <Route
+            path="/completeReset"
+            element={<CompleteReset getUser={getUser} />}
+          />
         </Routes>
         <Footer />
       </BrowserRouter>

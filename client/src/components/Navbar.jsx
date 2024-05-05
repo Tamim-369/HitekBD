@@ -151,14 +151,20 @@ const Navbar = () => {
                     <div className="profile-menu relative smd:absolute smd:right-16 smd:mt-10 flex flex-col justify-center items-center bg-white px-2 pb-2 rounded-md border shadow-lg">
                       <Link
                         to={"/orders"}
-                        onClick={() => setProfileMenu(false)}
+                        onClick={() => {
+                          setProfileMenu(false);
+                          setIsOpen(false);
+                        }}
                         className="w-full p-1 px-2 hover:text-red-500 smd:text-left text-center smd:bg-transparent bg-gray-200 mt-2 smd:border-b smd:rounded-none text-black smd:text-black rounded-lg "
                       >
                         Orders
                       </Link>
                       <Link
                         to={"/details"}
-                        onClick={() => setProfileMenu(false)}
+                        onClick={() => {
+                          setProfileMenu(false);
+                          setIsOpen(false);
+                        }}
                         className="w-full p-1 px-2 hover:text-red-500 smd:text-left text-center smd:bg-transparent bg-gray-200 mt-2 smd:border-b smd:rounded-none text-black smd:text-black rounded-lg "
                       >
                         Your details
@@ -169,6 +175,7 @@ const Navbar = () => {
                           localStorage.removeItem("email");
                           localStorage.removeItem("phoneNumber");
                           setProfileMenu(false);
+                          setIsOpen(false);
                           navigate("/signin");
                         }}
                         className="w-full p-1 px-2 hover:text-red-500 smd:text-left text-center smd:bg-transparent bg-gray-200 mt-2  smd:rounded-none text-black smd:text-black rounded-lg "

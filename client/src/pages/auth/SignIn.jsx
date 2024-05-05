@@ -6,6 +6,7 @@ const SignIn = () => {
   const images = ["/watch.png", "/fan.png", "/airpod.png"];
   const [formData, setFormData] = useState({});
   const [showPass, setShowPass] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const handleChange = (event) => {
     event.preventDefault();
@@ -13,6 +14,7 @@ const SignIn = () => {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     const response = await fetch("/api/users/signin", {
       method: "POST",
       headers: {
@@ -23,11 +25,15 @@ const SignIn = () => {
     const data = await response.json();
     if (!response.ok) {
       alert(data.message);
+      setLoading(false);
     }
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("email", data.email);
-    localStorage.setItem("phoneNumber", data.phoneNumber);
-    navigate("/profile");
+    if (response.ok) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("email", data.email);
+      localStorage.setItem("phoneNumber", data.phoneNumber);
+      setLoading(false);
+      navigate("/");
+    }
   };
   return (
     <div className="box-border z-20 w-full ">
@@ -95,21 +101,27 @@ const SignIn = () => {
               </div>
             </div>
 
+            <div
+              className="w-full flex flex-col justify-center 
+        md:justify-start md:items-start md:w-1/3 mt-0 mb-4 md:mb-0 text-center"
+            >
+              <button className="bg-red-600  shadow-sm  shadow-gray-500 text-white px-3 py-2 rounded-lg">
+                Sign In {loading && "..."}
+              </button>
+            </div>
             <div>
-              <p className="text-gray-600 text-xs mt-2">
+              <p className="text-gray-600 text-xs mt-3">
                 Don't have an account ?{" "}
                 <Link className="text-red-600" to={"/signup"}>
                   Sign Up
                 </Link>
+                <p className="text-gray-600 text-xs mt-2">
+                  {" "}
+                  <Link className="text-red-600" to={"/reset"}>
+                    Forget password
+                  </Link>
+                </p>
               </p>
-            </div>
-            <div
-              className="w-full flex flex-col justify-center 
-        md:justify-start md:items-start md:w-1/3 md:mt-3 mb-4 md:mb-0 text-center"
-            >
-              <button className="bg-red-600  shadow-sm  shadow-gray-500 text-white px-3 py-2 rounded-lg">
-                Sign In
-              </button>
             </div>
           </form>
         </div>

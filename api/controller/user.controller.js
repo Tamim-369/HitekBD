@@ -153,3 +153,44 @@ export const updateUser = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+export const resetPassword = async (req, res) => {
+  const randomNumber = Math.floor(Math.random() * 900000) + 100000;
+  sendEmail(
+    process.env.EMAIL,
+    process.env.PASS,
+    req.params.email,
+    "Reset Password",
+    `your verification code is ${randomNumber}`
+  );
+  const hashedNumber = await bcryptjs.hash(randomNumber.toString(), 10);
+  return res.status(200).json({
+    message: "We have send a verification code in your email.",
+    code: hashedNumber,
+  });
+};
+
+export const verifyCode = async (req, res) => {
+  const code = req.body.code;
+  const hashedCode = await bcryptjs.compare(code, req.query.code);
+  if (!hashedCode) {
+    return res.status(400).json({ message: "Invalid code" });
+  }
+  return res.status(200).json({ message: "Code verified successfully" });
+};
+
+export const resetPasswordFinish = async (req, res) => {
+  const { password } = req.body;
+  const hashedPassword = await bcryptjs.hash(password, 10);
+  const user = await User.findOne({ email: req.params.email });
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  user.password = hashedPassword;
+  try {
+    const updatedUser = await user.save();
+    return res.status(200).json({ user: updatedUser });
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
