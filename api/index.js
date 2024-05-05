@@ -4,8 +4,10 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import productRouter from "./routes/product.route.js";
 import userRouter from "./routes/user.route.js";
+import adminRouter from "./routes/admin.route.js";
 import bodyParser from "body-parser";
 import path from "path";
+
 dotenv.config(); // Load environment variables from .env file
 
 const app = express();
@@ -26,6 +28,7 @@ app.use(express.static(path.join(__dirname, "client/dist")));
 
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
+app.use("/api/admin", adminRouter);
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });

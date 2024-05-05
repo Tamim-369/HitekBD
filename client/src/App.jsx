@@ -22,6 +22,8 @@ import Orders from "./pages/Orders";
 import Details from "./pages/Details";
 import Reset from "./pages/Reset";
 import CompleteReset from "./pages/CompleteReset";
+import Fake from "./pages/Fake";
+import AdminPanel from "./pages/AdminPanel";
 function App() {
   const getUser = async (email) => {
     const response = await fetch(`/api/users/find/${email}`, {
@@ -58,6 +60,8 @@ function App() {
             path="/completeReset"
             element={<CompleteReset getUser={getUser} />}
           />
+          <Route path="/admin" element={<Fake />} />
+          <Route path="/admin-panel" element={<AdminPanel />} />
         </Routes>
         <Footer />
       </BrowserRouter>
