@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -28,6 +27,10 @@ const userSchema = new mongoose.Schema({
   street: {
     type: String,
     required: true,
+  },
+  verifyed: {
+    type: Boolean,
+    default: false,
   },
 });
 const User = mongoose.model("User", userSchema);

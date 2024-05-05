@@ -1,5 +1,13 @@
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import User from "../model/user.model.js";
+import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+import sendEmail from "../utils/mailSender.js";
+const JWT_SECRET = process.env.JWT_SECRET;
+function generateToken(payload) {
+  return jwt.sign(payload, process.env.JWT_SECRET);
+}
+
 export const createUser = async (req, res, next) => {
   const { name, phoneNumber, email, password, city, state, street } = req.body;
   if (
@@ -20,7 +28,7 @@ export const createUser = async (req, res, next) => {
       .status(400)
       .json({ message: "Email or Phone number already exist" });
   }
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcryptjs.hash(password, 10);
   const user = new User({
     name,
     phoneNumber,
@@ -31,11 +39,82 @@ export const createUser = async (req, res, next) => {
     street,
   });
   try {
-    await user.save();
-    res
-      .status(201)
-      .json({ message: "User created successfully Alhamdulillah" });
+    const newUser = await user.save();
+    const token = generateToken({ id: newUser._id });
+    console.log(token);
+    const link = `${process.env.CLIENT_URL}/confirm?token=${token}`;
+    const mailSuccess = await sendEmail(
+      process.env.EMAIL,
+      process.env.PASS,
+      newUser.email,
+      "Verify Email",
+      `please Click here ${link} to verify your email`
+    );
+    if (!mailSuccess) {
+      return res.status(500).json({ message: "Something went wrong" });
+    }
+
+    res.status(201).json({
+      email: newUser.email,
+      phoneNumber: newUser.phoneNumber,
+      token: token,
+      message:
+        "We have sent a verification link in your email. Please click it to verify your account",
+    });
   } catch {
     res.status(500).json({ message: "Something went wrong" });
   }
+};
+export const verifyUser = async (req, res, next) => {
+  // const { token } = req.body;
+  const token = req.params.token;
+  console.log(token);
+  if (!token) {
+    return res.status(400).json({ message: "Token is required" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.verifyed) {
+      return res.status(400).json({ message: "User already verified" });
+    }
+
+    user.verifyed = true;
+    await user.save();
+
+    res.status(200).json({ message: "User verified successfully" });
+  } catch (error) {
+    console.error("Error verifying user:", error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+export const getUser = async (req, res, next) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  const isMatch = await bcryptjs.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(400).json({ message: "Invalid credentials" });
+  }
+  if (!user.verifyed) {
+    return res.status(400).json({ message: "Please verify your email" });
+  }
+
+  res.status(200).json({
+    email: user.email,
+    phoneNumber: user.phoneNumber,
+    token: generateToken({ id: user._id }),
+    message: "Logged in successfully",
+  });
 };

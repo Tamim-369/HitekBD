@@ -17,6 +17,7 @@ import SignIn from "./pages/auth/SignIn";
 import Footer from "./components/Footer";
 import Cart from "./pages/Cart";
 import AdminAuth from "./pages/AdminAuth";
+import Confirm from "./pages/Confirm";
 function App() {
   return (
     <>
@@ -35,6 +36,7 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/adminAuth" element={<AdminAuth />} />
+          <Route path="/confirm" element={<Confirm />} />
         </Routes>
         <Footer />
       </BrowserRouter>

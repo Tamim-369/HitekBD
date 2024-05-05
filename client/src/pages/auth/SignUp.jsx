@@ -4,7 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 const SignUp = () => {
   const images = ["/watch.png", "/fan.png", "/airpod.png"];
   const [showPass, setShowPass] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -20,7 +22,7 @@ const SignUp = () => {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(JSON.stringify(formData));
+    setLoading(true);
     try {
       const response = await fetch("/api/users/create", {
         method: "POST",
@@ -29,7 +31,12 @@ const SignUp = () => {
         },
         body: JSON.stringify(formData),
       });
-      console.log(await response.json());
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.message);
+      }
+      localStorage.setItem("token", data.token);
+      setLoading(false);
       navigate("/signin");
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -48,6 +55,7 @@ const SignUp = () => {
             onSubmit={handleSubmit}
             className="w-full  max-w-lg md:px-auto px-10 sm:border-white sm:bg-gray-100 py-10 rounded-xl"
           >
+            {error && <p className="text-red-500 mx-auto my-2">{error}</p>}
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label
@@ -218,7 +226,7 @@ const SignUp = () => {
                 type="submit"
                 className="bg-red-600  shadow-sm  shadow-gray-500 text-white px-3 py-2 rounded-lg"
               >
-                Sign Up
+                Sign Up {loading && "..."}
               </button>
             </div>
           </form>

@@ -2,9 +2,12 @@ import React from "react";
 import { IoSearch } from "react-icons/io5";
 import { IoMenu } from "react-icons/io5";
 import { Link, useLocation } from "react-router-dom";
+import { AiOutlineUser } from "react-icons/ai";
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const checkLocation = useLocation().pathname;
+  const email = localStorage.getItem("email");
   return (
     <nav
       className={` fixed w-full   border-b z-50 	 ${
@@ -130,13 +133,27 @@ const Navbar = () => {
               >
                 About
               </Link>
-              <Link
-                onClick={() => setIsOpen(false)}
-                className="my-2 font-medium transition-colors duration-300 transform hover:text-red-200 shadow-md shadow-gray-400 text-sm flex justify-center items-center smd:mx-3 smd:my-1 smd:text-left text-center bg-red-600 text-white  py-2 smd:py-1 px-2 rounded-md "
-                to="/signup"
-              >
-                Sign Up
-              </Link>
+              {email ? (
+                <Link
+                  onClick={() => setIsOpen(false)}
+                  className="my-2 font-medium transition-colors duration-300 transform hover:text-red-200 shadow-md shadow-gray-400 text-sm flex justify-center items-center smd:mx-3 smd:my-1 smd:text-left text-center bg-red-600 text-white  py-2 smd:py-1 px-2 rounded-md "
+                  to="/signin"
+                >
+                  Sign in
+                </Link>
+              ) : (
+                <Link
+                  to={"/profile"}
+                  className="my-2 font-medium transition-colors duration-300 transform hover:text-red-200 shadow-md shadow-gray-400 text-sm flex justify-center items-center smd:mx-3 smd:my-1 smd:text-left text-center bg-red-600 text-white  py-2 smd:py-1 px-2 rounded-md"
+                >
+                  <div className="flex gap-1">
+                    <div>
+                      <AiOutlineUser />
+                    </div>
+                    <div>Profile</div>
+                  </div>
+                </Link>
+              )}
             </div>
 
             <div className="flex justify-center my-2 smd:my-auto smd:block">
