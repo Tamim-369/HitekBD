@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import Carousel from "../../components/Carousel";
-import { Link, useNavigate } from "react-router-dom";
-const SignUp = () => {
-  const images = ["/watch.png", "/fan.png", "/airpod.png"];
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+const Details = ({ getUser }) => {
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phoneNumber: "",
-    password: "",
-    city: "",
-    address: "",
-    state: "Dhaka",
-  });
+
+  const [formData, setFormData] = useState({});
+  useEffect(() => {
+    const findUser = async () => {
+      const user = await getUser(localStorage.getItem("email"));
+      setFormData(user);
+    };
+    findUser();
+  }, []);
+
   const handleChange = (event) => {
     event.preventDefault();
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -24,8 +24,8 @@ const SignUp = () => {
     event.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch("/api/users/create", {
-        method: "POST",
+      const response = await fetch(`/api/users/update/${formData._id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -35,25 +35,17 @@ const SignUp = () => {
       if (!response.ok) {
         setError(data.message);
       }
-      localStorage.setItem("token", data.token);
       setLoading(false);
-      alert(
-        "A verification link has been sent to your email. Click on that link to verify your account"
-      );
-      navigate("/signin");
+
+      navigate("/#hero");
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
   return (
-    <div className="box-border z-20 w-full ">
-      <div className=" my-auto mx-auto  min-w-screen flex justify-center items-center py-28 fixed flex-col">
-        <div className="w-[100vw] my-28  opacity-[0.13] ">
-          <Carousel images={images} />
-        </div>
-      </div>
+    <div className="mt-2 min-h-screen w-full ">
       <div className="flex flex-col absolute w-full lg:flex-row">
-        <div className=" lg:max-h-[92.2vh]  min-h-screen md:py-0 py-10 bg-gradient-to-t from-[#a8a8a883] to-transparent flex flex-col justify-center items-center w-full mx-auto lg:relative   md:w-full z-10 bg-transparent ">
+        <div className="   min-h-screen md:py-0 py-10 bg-gradient-to-t from-[#a8a8a883] to-transparent flex flex-col justify-center items-center w-full mx-auto lg:relative   md:w-full z-10 bg-transparent ">
           <form
             onSubmit={handleSubmit}
             className="w-full  max-w-lg md:px-auto px-10 sm:border-white sm:bg-gray-100 py-10 rounded-xl"
@@ -73,6 +65,7 @@ const SignUp = () => {
                   type="text"
                   placeholder="your name"
                   name="name"
+                  value={formData.name}
                   onChange={handleChange}
                   required
                 />
@@ -90,6 +83,7 @@ const SignUp = () => {
                   id="phoneNumber"
                   type="number"
                   placeholder="phone number"
+                  value={formData.phoneNumber}
                   name="phoneNumber"
                   onChange={handleChange}
                   required
@@ -108,39 +102,12 @@ const SignUp = () => {
                   className="px-4 py-2.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-red-500 outline-none "
                   id="email"
                   type="email"
+                  value={formData.email}
                   placeholder="Enter email"
                   name="email"
                   onChange={handleChange}
                   required
                 />
-              </div>
-              <div className="w-full px-3">
-                <label
-                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="grid-password"
-                >
-                  Password
-                </label>
-                <input
-                  className="px-4 py-2.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-red-500 outline-none "
-                  id="grid-password"
-                  type={`${showPass == true ? "text" : "password"}`}
-                  placeholder="**************"
-                  name="password"
-                  onChange={handleChange}
-                  required
-                />
-                <div className="flex gap-2 mt-2">
-                  <input
-                    type="checkbox"
-                    id="showpass"
-                    className="focus:bg-red-600"
-                    onChange={() => setShowPass(!showPass)}
-                  />
-                  <label htmlFor="showpass" className="cursor-pointer text-xs">
-                    Show Password
-                  </label>
-                </div>
               </div>
             </div>
             <div className="flex flex-wrap -mx-3 mb-2">
@@ -157,6 +124,7 @@ const SignUp = () => {
                   type="text"
                   placeholder="Dhaka"
                   onChange={handleChange}
+                  value={formData.city}
                   name="city"
                   required
                 />
@@ -173,6 +141,7 @@ const SignUp = () => {
                     className="block appearance-none w-full px-4 py-2.5 bg-white text-[#333] text-sm border-b-2  focus:border-[#f88a8a] outline-none "
                     id="grid-state"
                     onChange={handleChange}
+                    value={formData.state}
                     name="state"
                   >
                     <option>Dhaka</option>
@@ -208,9 +177,32 @@ const SignUp = () => {
                   type="text"
                   placeholder={"address"}
                   onChange={handleChange}
+                  value={formData.street}
                   name="street"
                   required
                 />
+              </div>
+            </div>
+
+            <div
+              className="w-full mt-1 flex gap-2 justify-between 
+              md:mb-0 text-center items-center"
+            >
+              <div>
+                <Link
+                  to={"/"}
+                  className="bg-gray-300  shadow-sm  text-black px-3 py-2 rounded-lg"
+                >
+                  Back
+                </Link>
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  className="bg-red-600  shadow-sm   text-white px-3 py-2 rounded-lg"
+                >
+                  Update {loading && "..."}
+                </button>
               </div>
             </div>
             <div>
@@ -221,17 +213,6 @@ const SignUp = () => {
                 </Link>
               </p>
             </div>
-            <div
-              className="w-full flex flex-col justify-center 
-            md:justify-start md:items-start md:w-1/3 md:mt-3 mb-4 md:mb-0 text-center"
-            >
-              <button
-                type="submit"
-                className="bg-red-600  shadow-sm  shadow-gray-500 text-white px-3 py-2 rounded-lg"
-              >
-                Sign Up {loading && "..."}
-              </button>
-            </div>
           </form>
         </div>
       </div>
@@ -239,4 +220,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Details;

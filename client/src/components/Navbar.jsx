@@ -6,6 +6,7 @@ import { AiOutlineUser } from "react-icons/ai";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [profileMenu, setProfileMenu] = React.useState(false);
   const checkLocation = useLocation().pathname;
   const token = localStorage.getItem("token");
   return (
@@ -134,17 +135,49 @@ const Navbar = () => {
                 About
               </Link>
               {token ? (
-                <Link
-                  to={"/profile"}
-                  className="my-2 font-medium transition-colors duration-300 transform hover:text-red-200 shadow-md shadow-gray-400 text-sm flex justify-center items-center smd:mx-3 smd:my-1 smd:text-left text-center bg-red-600 text-white  py-2 smd:py-1 px-2 rounded-md"
-                >
-                  <div className="flex gap-1">
-                    <div>
-                      <AiOutlineUser />
+                <>
+                  <button
+                    onClick={() => setProfileMenu(!profileMenu)}
+                    className="my-2 font-medium transition-colors duration-300 transform hover:text-red-200 shadow-md shadow-gray-400 text-sm flex justify-center items-center smd:mx-3 smd:my-1 smd:text-left text-center bg-red-600 text-white  py-2 smd:py-1 px-2 rounded-md"
+                  >
+                    <div className="flex gap-1 justify-center items-center">
+                      <div className="text-xl font-bold">
+                        <AiOutlineUser />
+                      </div>
+                      <div className="text-sm">Profile</div>
                     </div>
-                    <div>Profile</div>
-                  </div>
-                </Link>
+                  </button>
+                  {profileMenu && (
+                    <div className="profile-menu relative smd:absolute smd:right-16 smd:mt-10 flex flex-col justify-center items-center bg-white px-2 pb-2 rounded-md border shadow-lg">
+                      <Link
+                        to={"/orders"}
+                        onClick={() => setProfileMenu(false)}
+                        className="w-full p-1 px-2 hover:text-red-500 smd:text-left text-center smd:bg-transparent bg-gray-200 mt-2 smd:border-b smd:rounded-none text-black smd:text-black rounded-lg "
+                      >
+                        Orders
+                      </Link>
+                      <Link
+                        to={"/details"}
+                        onClick={() => setProfileMenu(false)}
+                        className="w-full p-1 px-2 hover:text-red-500 smd:text-left text-center smd:bg-transparent bg-gray-200 mt-2 smd:border-b smd:rounded-none text-black smd:text-black rounded-lg "
+                      >
+                        Your details
+                      </Link>
+                      <Link
+                        onClick={() => {
+                          localStorage.removeItem("token");
+                          localStorage.removeItem("email");
+                          localStorage.removeItem("phoneNumber");
+                          setProfileMenu(false);
+                          navigate("/signin");
+                        }}
+                        className="w-full p-1 px-2 hover:text-red-500 smd:text-left text-center smd:bg-transparent bg-gray-200 mt-2  smd:rounded-none text-black smd:text-black rounded-lg "
+                      >
+                        Logout
+                      </Link>
+                    </div>
+                  )}
+                </>
               ) : (
                 <Link
                   onClick={() => setIsOpen(false)}

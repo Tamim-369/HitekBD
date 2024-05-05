@@ -127,7 +127,28 @@ export const findUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    return res.status(200).json({ user });
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  const id = req.params.id;
+  const { name, email, phoneNumber, city, state, street } = req.body;
+  const user = await User.findById(id);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  user.name = name;
+  user.email = email;
+  user.phoneNumber = phoneNumber;
+  user.city = city;
+  user.state = state;
+  user.street = street;
+  try {
+    const updatedUser = await user.save();
+    return res.status(200).json({ user: updatedUser });
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });
   }

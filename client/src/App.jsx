@@ -18,7 +18,19 @@ import Footer from "./components/Footer";
 import Cart from "./pages/Cart";
 import AdminAuth from "./pages/AdminAuth";
 import Confirm from "./pages/Confirm";
+import Orders from "./pages/Orders";
+import Details from "./pages/Details";
 function App() {
+  const getUser = async (email) => {
+    const response = await fetch(`/api/users/find/${email}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    return data;
+  };
   return (
     <>
       <BrowserRouter>
@@ -37,6 +49,8 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/adminAuth" element={<AdminAuth />} />
           <Route path="/confirm" element={<Confirm />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/details" element={<Details getUser={getUser} />} />
         </Routes>
         <Footer />
       </BrowserRouter>
