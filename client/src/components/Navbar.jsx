@@ -141,7 +141,7 @@ const Navbar = () => {
                   <>
                     <button
                       onClick={() => setProfileMenu(!profileMenu)}
-                      className="my-2 font-medium transition-colors duration-300 transform hover:text-red-200 shadow-md shadow-gray-400 text-sm flex justify-center items-center smd:mx-3 smd:my-1 smd:text-left text-center bg-red-600 text-white  py-2 smd:py-1 px-2 rounded-md"
+                      className="my-2 font-medium transition-colors duration-300 transform hover:text-red-200  text-sm flex justify-center items-center smd:mx-3 smd:my-1 smd:text-left text-center bg-red-600 text-white  py-2 smd:py-1 px-2 rounded-md"
                     >
                       <div className="flex gap-1 justify-center items-center">
                         <div className="text-xl font-bold">
@@ -191,7 +191,7 @@ const Navbar = () => {
                 ) : (
                   <Link
                     onClick={() => setIsOpen(false)}
-                    className="my-2 font-medium transition-colors duration-300 transform hover:text-red-200 shadow-md shadow-gray-400 text-sm flex justify-center items-center smd:mx-3 smd:my-1 smd:text-left text-center bg-red-600 text-white  py-2 smd:py-1 px-2 rounded-md "
+                    className="my-2 font-medium transition-colors duration-300 transform hover:text-red-200  text-sm flex justify-center items-center smd:mx-3 smd:my-1 smd:text-left text-center bg-red-600 text-white  py-2 smd:py-1 px-2 rounded-md "
                     to="/signin"
                   >
                     Sign in

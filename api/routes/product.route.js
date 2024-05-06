@@ -1,6 +1,14 @@
 import { Router } from "express";
-import { getAllProducts } from "../controller/product.controller.js";
-const router = Router();
-router.get("/all", getAllProducts);
+import {
+  createProduct,
+  getAllProducts,
+  getOneProduct,
+} from "../controller/product.controller.js";
+import upload from "../utils/uploadFile.js";
 
+const router = Router();
+
+router.get("/all", getAllProducts);
+router.post("/create", upload.single("image"), createProduct);
+router.get("/single/:id", getOneProduct);
 export default router;
