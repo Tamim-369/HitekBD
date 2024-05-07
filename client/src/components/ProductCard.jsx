@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
-const ProductCard = ({ name, price, category, image }) => {
+const ProductCard = ({ name, price, category, image, id }) => {
   // false should be replaced by the product id
   const location = useLocation().pathname;
   return (
@@ -11,7 +11,7 @@ const ProductCard = ({ name, price, category, image }) => {
       }  p-2  xs:p-2 mx-auto  w-full xs:w-full sm:w-full md:w-full  bg-white shadow-lg border rounded-xl`}
     >
       <Link
-        to={"/product"}
+        to={`/product?id=${id}`}
         className={`block ${
           location == "/" || location == "/#latest"
             ? "transition ease-in-out delay-150  hover:-translate-y-1 hover:scale-110 hover:shadow-xl  hover:shadow-gray-400 hover:rounded-xl rounded-xl duration-300 "
@@ -36,7 +36,7 @@ const ProductCard = ({ name, price, category, image }) => {
         </p>
         <div className="flex xs:mt-2 flex-col-reverse gap-2 md:flex-row xs:justify-between xs:items-start">
           <div>
-            <Link to={"/product"} className="w-full">
+            <Link to={`/product?id=${id}`} className="w-full">
               <button
                 className={`bg-red-600 xs:w-auto w-full text-sm xs:text-sm ${
                   location == "/" || location == "/#latest"

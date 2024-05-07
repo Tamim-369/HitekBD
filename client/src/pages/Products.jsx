@@ -1,10 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import Button from "../components/Button";
-const Products = () => {
+import Loader from "../components/Loader";
+const Products = ({ getAllProducts }) => {
   const [toggleCategory, setToggleCategory] = useState(false);
+  const [products, setProducts] = useState([]);
   const [category, setCategory] = useState("All");
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const allProducts = await getAllProducts();
+      setProducts(allProducts);
+      setLoading(false);
+    })();
+  }, []);
+
   return (
     <div>
       <div
@@ -76,44 +88,21 @@ const Products = () => {
         <div className="border-t  w-full md:w-full mx-auto flex flex-col justify-center items-center">
           <section className="text-gray-600 body-font w-full flex flex-col justify-center items-center">
             <div className="xs:px-2 md:px-3 py-10 w-full mx-auto flex flex-col justify-center items-center">
-              <div className="grid md:w-11/12 sm:grid-cols-3  w-full grid-cols-1 xs:grid-cols-2 gap-2 xs:px-auto px-2 xs:gap-3 sm:gap-3 md:gap-3 lg:gap-3 -m-4  justify-center items-start ">
-                <ProductCard
-                  name="Airpod Pro"
-                  price="16.00"
-                  category="Airpods"
-                  image="/airpod.png"
-                />
-                <ProductCard
-                  name="Cooler Fan"
-                  price="16.00"
-                  category="Fan"
-                  image="/fan.png"
-                />
-                <ProductCard
-                  name="Cooler Fan"
-                  price="16.00"
-                  category="Fan"
-                  image="/mini.jpeg"
-                />
-                <ProductCard
-                  name="watch "
-                  price="16.00"
-                  category="Fan"
-                  image="/watch.png"
-                />
-                <ProductCard
-                  name="watch "
-                  price="16.00"
-                  category="Fan"
-                  image="/fan.png"
-                />
-                <ProductCard
-                  name="watch "
-                  price="16.00"
-                  category="Fan"
-                  image="/airpod.png"
-                />
-              </div>
+              {loading ? (
+                <Loader />
+              ) : (
+                <div className="grid md:w-11/12 sm:grid-cols-3  w-full grid-cols-1 xs:grid-cols-2 gap-2 xs:px-auto px-2 xs:gap-3 sm:gap-3 md:gap-3 lg:gap-3 -m-4  justify-center items-start ">
+                  {products.map((product) => (
+                    <ProductCard
+                      name={product.name}
+                      price={product.price}
+                      category={product.category}
+                      image={product.image}
+                      id={product._id}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </section>
         </div>

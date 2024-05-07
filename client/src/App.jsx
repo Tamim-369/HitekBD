@@ -24,6 +24,7 @@ import Reset from "./pages/Reset";
 import CompleteReset from "./pages/CompleteReset";
 import Fake from "./pages/Fake";
 import AdminPanel from "./pages/AdminPanel";
+import { ShopContextProvider } from "./context/shop-context";
 function App() {
   const getUser = async (email) => {
     const response = await fetch(`/api/users/find/${email}`, {
@@ -35,35 +36,74 @@ function App() {
     const data = await response.json();
     return data;
   };
+  const getOneProduct = async (id) => {
+    const response = await fetch(`/api/products/single/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    return data;
+  };
+  const getAllProducts = async () => {
+    const response = await fetch("/api/products/all", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    return data;
+  };
   return (
     <>
       <BrowserRouter>
-        <Navbar />
-        <br />
-        <br />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/product" element={<Product />} />
-          <Route path="/allCombo" element={<Combos />} />
-          <Route path="/combo" element={<Combo />} />
-          <Route path="/checkout" element={<CheckOut />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/adminAuth" element={<AdminAuth />} />
-          <Route path="/confirm" element={<Confirm />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/details" element={<Details getUser={getUser} />} />
-          <Route path="/reset" element={<Reset getUser={getUser} />} />
-          <Route
-            path="/completeReset"
-            element={<CompleteReset getUser={getUser} />}
-          />
-          <Route path="/admin" element={<Fake />} />
-          <Route path="/admin-panel" element={<AdminPanel />} />
-        </Routes>
-        <Footer />
+        <ShopContextProvider>
+          <Navbar />
+          <br />
+          <br />
+          <Routes>
+            <Route
+              path="/"
+              element={<Home getAllProducts={getAllProducts} />}
+            />
+            <Route
+              path="/products"
+              element={<Products getAllProducts={getAllProducts} />}
+            />
+            <Route
+              path="/product"
+              element={<Product getOneProduct={getOneProduct} />}
+            />
+            <Route path="/allCombo" element={<Combos />} />
+            <Route path="/combo" element={<Combo />} />
+            <Route path="/checkout" element={<CheckOut />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route
+              path="/cart"
+              element={
+                <Cart
+                  getOneProduct={getOneProduct}
+                  getAllProducts={getAllProducts}
+                />
+              }
+            />
+            <Route path="/adminAuth" element={<AdminAuth />} />
+            <Route path="/confirm" element={<Confirm />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="/details" element={<Details getUser={getUser} />} />
+            <Route path="/reset" element={<Reset getUser={getUser} />} />
+            <Route
+              path="/completeReset"
+              element={<CompleteReset getUser={getUser} />}
+            />
+            <Route path="/admin" element={<Fake />} />
+            <Route path="/admin-panel" element={<AdminPanel />} />
+          </Routes>
+          <Footer />
+        </ShopContextProvider>
       </BrowserRouter>
     </>
   );

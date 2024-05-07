@@ -7,11 +7,11 @@ import LatestProducts from "../components/LatestProducts";
 import About from "../components/sections/About";
 import { useLocation } from "react-router-dom";
 
-function Home() {
+function Home({ getAllProducts }) {
   return (
     <>
       <Hero />
-      <LatestProducts />
+      <LatestProducts getAllProducts={getAllProducts} />
       <About />
     </>
   );

@@ -1,11 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import Button from "./Button";
 import { Link, useLocation } from "react-router-dom";
 
-const LatestProducts = () => {
+const LatestProducts = ({ getAllProducts }) => {
   const location = useLocation();
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    const fetchAllProducts = async () => {
+      try {
+        // Assuming getAllProducts is a function that fetches all products
+        const allProducts = await getAllProducts();
+        const sortedProducts = [...allProducts].sort((a, b) => b.date - a.date);
+        const latestProducts = sortedProducts.slice(0, 5);
 
+        setProducts(latestProducts);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchAllProducts();
+  }, []);
   useEffect(() => {
     if (location.hash) {
       const element = document.getElementById(location.hash.substring(1));
@@ -27,42 +43,16 @@ const LatestProducts = () => {
         >
           <div className="container px-5 py-8 w-full mx-auto flex flex-col justify-center items-center">
             <div className="grid lg:grid-cols-3 w-full sm:grid-cols-2 grid-cols-1 gap-4 -m-4  justify-center items-start">
-              <ProductCard
-                name="Airpod Pro"
-                price="16.00"
-                category="Airpods"
-                image="/airpod.png"
-              />
-              <ProductCard
-                name="Cooler Fan"
-                price="16.00"
-                category="Fan"
-                image="/fan.png"
-              />
-              <ProductCard
-                name="Cooler Fan"
-                price="16.00"
-                category="Fan"
-                image="/mini.jpeg"
-              />
-              <ProductCard
-                name="watch "
-                price="16.00"
-                category="Fan"
-                image="/watch.png"
-              />
-              <ProductCard
-                name="watch "
-                price="16.00"
-                category="Fan"
-                image="/fan.png"
-              />
-              <ProductCard
-                name="watch "
-                price="16.00"
-                category="Fan"
-                image="/airpod.png"
-              />
+              {products.map((product) => (
+                <ProductCard
+                  name={product.name}
+                  price={product.price}
+                  category={product.category}
+                  image={product.image}
+                  key={product._id}
+                  id={product._id}
+                />
+              ))}
             </div>
             <div className="text-center mt-10">
               <Link to="/products">
