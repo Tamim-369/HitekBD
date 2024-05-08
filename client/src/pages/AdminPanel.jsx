@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IoMdLogOut } from "react-icons/io";
 import { FaHome } from "react-icons/fa";
@@ -25,12 +25,11 @@ import { GiProgression } from "react-icons/gi";
 import DashBoard from "../components/DashBoard";
 import UploadProduct from "../components/UploadProduct";
 import Delivered from "../components/Delivered";
-
+import RecentOrders from "../components/RecentOrders";
 const AdminPanel = () => {
   const [showMenu, setShowMenu] = useState(window.innerWidth >= 870);
   const [medium, setMedium] = useState(window.innerWidth >= 870);
   const [currentTab, setCurrentTab] = useState();
-
   const navigate = useNavigate();
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -43,12 +42,26 @@ const AdminPanel = () => {
       }
     });
   });
+  const getAllOrders = async () => {
+    const allOrders = await fetch("api/products/getOrder", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await allOrders.json();
+    return data;
+  };
   useEffect(() => {
     if (!localStorage.getItem("adminToken")) {
       navigate("/adminAuth");
     }
     setCurrentTab(
-      <DashBoard currentTab={currentTab} setCurrentTab={setCurrentTab} />
+      <DashBoard
+        currentTab={currentTab}
+        getAllOrders={getAllOrders}
+        setCurrentTab={setCurrentTab}
+      />
     );
   }, []);
 
@@ -114,6 +127,7 @@ const AdminPanel = () => {
                   setCurrentTab(
                     <DashBoard
                       currentTab={currentTab}
+                      getAllOrders={getAllOrders}
                       setCurrentTab={setCurrentTab}
                     />
                   );
@@ -137,15 +151,18 @@ const AdminPanel = () => {
                 </div>
                 <div className="text">Delivered</div>
               </button>
-              <Link
-                to="/adminPanel"
+              <button
+                onClick={() => {
+                  setCurrentTab(<RecentOrders />);
+                  if (!medium) setShowMenu(false);
+                }}
                 className="bg-gray-200 flex justify-start gap-2 items-center w-full text-black  rounded-md p-[0.6rem] font-medium"
               >
                 <div className="icon text-2xl ">
                   <IoBagHandleOutline />
                 </div>
                 <div className="text">Recent Orders</div>
-              </Link>
+              </button>
               <button
                 onClick={() => {
                   setCurrentTab(<UploadProduct />);

@@ -194,3 +194,12 @@ export const resetPasswordFinish = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+export const getAllUsers = async (req, res) => {
+  const users = await User.find({});
+  if (users) {
+    return res.status(200).json(users);
+  } else {
+    return res.status(200).json({ message: "No users found" });
+  }
+};

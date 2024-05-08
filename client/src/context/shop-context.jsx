@@ -20,12 +20,16 @@ const getDefaultCart = async () => {
 export const ShopContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({});
   const [products, setProducts] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [addedProducts, setAddedProducts] = useState(false);
+  const [checkOutProducts, setCheckOutProducts] = useState([]);
   useEffect(() => {
     getDefaultCart().then((defaultCart) => {
       setCartItems(defaultCart);
     });
     getAllProducts();
   }, []);
+
   const getAllProducts = async () => {
     const response = await fetch("/api/products/all", {
       method: "GET",
@@ -49,6 +53,7 @@ export const ShopContextProvider = ({ children }) => {
 
   const addToCart = (id) => {
     setCartItems((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+    setAddedProducts(true);
   };
 
   const removeFromCart = (id) => {
@@ -57,10 +62,51 @@ export const ShopContextProvider = ({ children }) => {
       [id]: Math.max((prev[id] || 0) - 1, 0),
     }));
   };
-
+  const clearCart = () => {
+    setCartItems({});
+  };
   const updateCartItemAmount = (amount, id) => {
     setCartItems((prev) => ({ ...prev, [id]: amount }));
   };
+  const getUser = async (email) => {
+    const response = await fetch(`/api/users/find/${email}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    return data;
+  };
+  const getUsers = async (email) => {
+    const response = await fetch(`/api/users/all`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    return data;
+  };
+  const [finalProducts, setFinalProducts] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const initialObject = cartItems;
+      // console.log(initialObject);
+      const resultArray = Object.keys(initialObject).map((key) => {
+        const productId = key;
+        const amount = initialObject[key];
+        return { productId, amount };
+      });
+      const filteredArray = resultArray.filter((item) => item.amount > 0);
+      setFinalProducts(filteredArray);
+    })();
+  }, [cartItems]);
+
+  // Use finalProducts elsewhere in your component
+  useEffect(() => {
+    // console.log(finalProducts);
+  }, [finalProducts]);
 
   const contextValue = {
     cartItems,
@@ -68,6 +114,12 @@ export const ShopContextProvider = ({ children }) => {
     removeFromCart,
     updateCartItemAmount,
     getTotalCartAmount,
+    getUser,
+    addedProducts,
+    getUsers,
+    setAddedProducts,
+    finalProducts,
+    clearCart,
   };
 
   return (

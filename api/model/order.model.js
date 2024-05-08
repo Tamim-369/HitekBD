@@ -8,9 +8,17 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  price: {
+    type: Number,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
+  },
+  status: {
+    type: String,
+    default: "pending",
   },
   city: {
     type: String,
@@ -28,11 +36,8 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  nagad: {
-    type: Boolean,
-  },
-  bkash: {
-    type: Boolean,
+  paymentMethod: {
+    type: String,
   },
 
   date: {

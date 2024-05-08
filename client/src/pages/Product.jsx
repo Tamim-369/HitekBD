@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import ImageMagnifier from "../components/ImageMagnifier";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { ShopContext } from "../context/shop-context";
@@ -10,7 +10,8 @@ const Product = ({ getOneProduct }) => {
   const queryParams = new URLSearchParams(location.search);
   const productId = queryParams.get("id");
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
+  const [showCheckout, setShowCheckout] = useState(false);
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -19,7 +20,8 @@ const Product = ({ getOneProduct }) => {
       setLoading(false);
     })();
   }, []);
-  const { addToCart, cartItems, removeFromCart } = useContext(ShopContext);
+  const { addToCart, cartItems, removeFromCart, setAddedProducts } =
+    useContext(ShopContext);
   return (
     <>
       {loading ? (
@@ -74,12 +76,16 @@ const Product = ({ getOneProduct }) => {
                         <FaPlus />
                       </button>
                     </div>
+
                     <div className="flex-1">
                       <button
-                        onClick={() => addToCart(product._id)}
+                        onClick={() => {
+                          setAddedProducts(false);
+                          addToCart(product._id);
+                        }}
                         className="flex ml-auto text-white bg-red-600  shadow-lg border-0 py-2 px-6 focus:outline-none  rounded-lg"
                       >
-                        Add to cart
+                        Add to Cart
                       </button>
                     </div>
                   </div>

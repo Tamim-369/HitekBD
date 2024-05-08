@@ -25,6 +25,7 @@ import CompleteReset from "./pages/CompleteReset";
 import Fake from "./pages/Fake";
 import AdminPanel from "./pages/AdminPanel";
 import { ShopContextProvider } from "./context/shop-context";
+import Order from "./components/Order";
 function App() {
   const getUser = async (email) => {
     const response = await fetch(`/api/users/find/${email}`, {
@@ -101,6 +102,7 @@ function App() {
             />
             <Route path="/admin" element={<Fake />} />
             <Route path="/admin-panel" element={<AdminPanel />} />
+            <Route path="/order" element={<Order />} />
           </Routes>
           <Footer />
         </ShopContextProvider>

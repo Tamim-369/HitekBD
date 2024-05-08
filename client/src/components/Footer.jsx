@@ -12,6 +12,7 @@ const Footer = () => {
       location == "/signup" ||
       location == "/adminAuth" ||
       location == "/admin-panel" ||
+      location == "/order" ||
       location == "/admin" ? (
         ""
       ) : (
