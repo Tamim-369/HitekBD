@@ -76,7 +76,7 @@ const Navbar = () => {
                   name="search"
                   className={`p-[5px] ${
                     !searchOpen && "hidden"
-                  } absolute px-[10px] z-50 top-0 bottom-0 left-0 right-0 w-[65dvw] xs:w-[70dvw] my-auto  ml-2 h-[6dvh] rounded-lg  mr-2 focus:outline-none bg-gray-50 border `}
+                  } absolute px-[10px] z-50 top-0 bottom-0 left-0 right-0 w-[59dvw] xsd:w-[65dvw] xs:w-[70dvw] ml-2 my-2 rounded-lg  mr-2 focus:outline-none bg-gray-200 border `}
                   onChange={handleSearch}
                   value={searchValue}
                   placeholder="search"
@@ -176,22 +176,25 @@ const Navbar = () => {
           </div>
 
           <div className="w-5/12 smd:flex hidden">
-            <div>
-              <form className="flex justify-center w-full items-center">
-                <input
-                  type="text"
-                  name="search"
-                  className="p-[5px] w-full px-[10px] rounded-l-lg focus:outline-none bg-gray-50 border "
-                  placeholder="search"
-                />
-                <button
-                  type="submit"
-                  className="bg-red-500 p-[10px] text-white rounded-r-lg"
-                >
-                  <IoSearch />
-                </button>
-              </form>
-            </div>
+            <form
+              onSubmit={handleSearchSubmit}
+              className="flex justify-center w-full items-center"
+            >
+              <input
+                type="text"
+                name="search"
+                className="p-[5px] w-full px-[10px] rounded-l-lg focus:outline-none bg-gray-50 border "
+                placeholder="search"
+                onChange={handleSearch}
+                value={searchValue}
+              />
+              <button
+                type="submit"
+                className="bg-red-500 p-[10px] text-white rounded-r-lg"
+              >
+                <IoSearch />
+              </button>
+            </form>
           </div>
 
           <div>

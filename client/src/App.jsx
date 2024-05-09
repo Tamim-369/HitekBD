@@ -106,7 +106,10 @@ function App() {
             <Route path="/admin-panel" element={<AdminPanel />} />
             <Route path="/order" element={<Order />} />
             <Route path="/editProduct" element={<EditProduct />} />
-            <Route path="/search" element={<Search />} />
+            <Route
+              path="/search"
+              element={<Search getAllProducts={getAllProducts} />}
+            />
           </Routes>
           <Footer />
         </ShopContextProvider>
