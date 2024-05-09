@@ -14,10 +14,8 @@ const Search = ({ getAllProducts }) => {
         setloading(true);
         const allProducts = await getAllProducts();
         setProducts(allProducts);
-        const filtered = allProducts.filter(
-          (product) =>
-            product.description.toLowerCase().includes(query.toLowerCase()) ||
-            product.name.toLowerCase().includes(query.toLowerCase())
+        const filtered = allProducts.filter((product) =>
+          product.description.toLowerCase().includes(query.toLowerCase())
         );
         console.log(filtered);
         setFilteredProducts(filtered);
