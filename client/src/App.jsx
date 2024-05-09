@@ -27,6 +27,7 @@ import AdminPanel from "./pages/AdminPanel";
 import { ShopContextProvider } from "./context/shop-context";
 import Order from "./components/Order";
 import EditProduct from "./components/EditProduct";
+import Search from "./pages/Search";
 function App() {
   const getUser = async (email) => {
     const response = await fetch(`/api/users/find/${email}`, {
@@ -105,6 +106,7 @@ function App() {
             <Route path="/admin-panel" element={<AdminPanel />} />
             <Route path="/order" element={<Order />} />
             <Route path="/editProduct" element={<EditProduct />} />
+            <Route path="/search" element={<Search />} />
           </Routes>
           <Footer />
         </ShopContextProvider>

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { IoMenu } from "react-icons/io5";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineUser } from "react-icons/ai";
 import { PiShoppingCartSimpleBold } from "react-icons/pi";
 import { ShopContext } from "../context/shop-context";
@@ -9,10 +9,24 @@ import { ShopContext } from "../context/shop-context";
 const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [profileMenu, setProfileMenu] = React.useState(false);
+  const navigate = useNavigate();
   const checkLocation = useLocation().pathname;
+  const [searchValue, setSearchValue] = useState("");
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const searchQuery = query.get("q");
+  const [searchOpen, setSearchOpen] = useState(false);
   const { cartItems, addedProducts, setAddedProducts } =
     useContext(ShopContext);
-
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearchValue(e.target.value);
+  };
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    console.log("Search submitted:", `/search?q=${searchValue}`);
+    navigate(`/search?q=${searchValue}`);
+  };
   const token = localStorage.getItem("token");
   if (
     checkLocation == "/admin-panel" ||
@@ -32,23 +46,63 @@ const Navbar = () => {
             : "shadow-md backdrop-blur-xl bg-white/75"
         }`}
       >
-        <div className="px-3 sm:px-6 smd:py-2 py-[10px] mx-auto  smd:flex smd:justify-between smd:items-center">
+        <div className="px-3 sm:px-6 smd:py-2 py-[8px] mx-auto  smd:flex smd:justify-between smd:items-center">
           <div className="flex items-center justify-between">
-            <Link to={`${"/#hero"}`} className="sm:pr-2">
+            <Link to={`${"/#hero"}`} className="sm:pr-2 ">
               <img
                 alt=""
-                className=""
+                className={`absolute top-0 ${
+                  isOpen ? "bottom-[14.5rem]" : "bottom-0"
+                } z-30 sm:hidden flex my-auto object-scale-down `}
+                src="/logo-tr.png"
+                height={100}
+                width={100}
+              />
+              <img
+                alt=""
+                className="xs:relative hidden sm:flex z-30  my-auto "
                 height={100}
                 width={100}
                 src="/logo-tr.png"
               />
             </Link>
-            <div className="w-7/12  smd:hidden flex">
-              <form className="flex justify-center w-full items-center">
+            <div className="flex w-[100%] mr-3  justify-end    sm:hidden ">
+              <form
+                onSubmit={handleSearchSubmit}
+                className="flex justify-center  items-center"
+              >
+                <input
+                  type="text"
+                  name="search"
+                  className={`p-[5px] ${
+                    !searchOpen && "hidden"
+                  } absolute px-[10px] z-50 top-0 bottom-0 left-0 right-0 w-[65dvw] xs:w-[70dvw] my-auto  ml-2 h-[6dvh] rounded-lg  mr-2 focus:outline-none bg-gray-50 border `}
+                  onChange={handleSearch}
+                  value={searchValue}
+                  placeholder="search"
+                />
+                <button
+                  onClick={() => {
+                    setSearchOpen(!searchOpen);
+                    setIsOpen(false);
+                  }}
+                  className=" text-2xl  flex justify-center  items-center   text-gray-600 rounded-lg"
+                >
+                  <IoSearch />
+                </button>
+              </form>
+            </div>
+            <div className="hidden w-7/12    smd:hidden sm:flex ">
+              <form
+                onSubmit={handleSearchSubmit}
+                className="flex justify-center w-full items-center"
+              >
                 <input
                   type="text"
                   name="search"
                   className="p-[5px] w-full px-[10px] rounded-l-lg focus:outline-none bg-gray-50 border "
+                  onChange={handleSearch}
+                  value={searchValue}
                   placeholder="search"
                 />
                 <button
@@ -59,66 +113,87 @@ const Navbar = () => {
                 </button>
               </form>
             </div>
-            <div className="flex smd:hidden">
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                aria-label="toggle menu"
-                className="text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400"
-                type="button"
-              >
-                {isOpen ? (
-                  <svg
-                    className="w-8 h-8"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M6 18L18 6M6 6l12 12"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                ) : (
-                  <span className="text-3xl  ">
-                    <IoMenu />
-                  </span>
-                  // <svg
-                  //   className="w-6 h-6"
-                  //   fill="none"
-                  //   stroke="currentColor"
-                  //   strokeWidth="2"
-                  //   viewBox="0 0 24 24"
-                  //   xmlns="http://www.w3.org/2000/svg"
-                  // >
-                  //   <path
-                  //     d="M4 8h16M4 16h16"
-                  //     strokeLinecap="round"
-                  //     strokeLinejoin="round"
-                  //   />
-                  // </svg>
-                )}
-              </button>
+            <div className="flex justify-center items-center gap-4">
+              <div className=" flex justify-center my-2 smd:my-auto smd:hidden">
+                <Link
+                  className="text-2xl  flex justify-center  items-center   text-gray-600 rounded-lg"
+                  to="/cart"
+                >
+                  <PiShoppingCartSimpleBold />
+                  {addedProducts && (
+                    <span className="absolute py-[0.2rem] px-[0.2rem] top-0 left-0 shadow-lg border border-red-500 text-[0.5rem] font-bold text-white bg-red-500 rounded-full "></span>
+                  )}
+                </Link>
+              </div>
+              <div className="flex smd:hidden">
+                <button
+                  onClick={() => {
+                    setIsOpen(!isOpen);
+
+                    setSearchOpen(false);
+                  }}
+                  aria-label="toggle menu"
+                  className="text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400"
+                  type="button"
+                >
+                  {isOpen ? (
+                    <svg
+                      className="w-8 h-8"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M6 18L18 6M6 6l12 12"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  ) : (
+                    <span className="text-3xl text-gray-600  ">
+                      <IoMenu />
+                    </span>
+                    // <svg
+                    //   className="w-6 h-6"
+                    //   fill="none"
+                    //   stroke="currentColor"
+                    //   strokeWidth="2"
+                    //   viewBox="0 0 24 24"
+                    //   xmlns="http://www.w3.org/2000/svg"
+                    // >
+                    //   <path
+                    //     d="M4 8h16M4 16h16"
+                    //     strokeLinecap="round"
+                    //     strokeLinejoin="round"
+                    //   />
+                    // </svg>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
+
           <div className="w-5/12 smd:flex hidden">
-            <form className="flex justify-center w-full items-center">
-              <input
-                type="text"
-                name="search"
-                className="p-[5px] w-full px-[10px] rounded-l-lg focus:outline-none bg-gray-50 border "
-                placeholder="search"
-              />
-              <button
-                type="submit"
-                className="bg-red-500 p-[10px] text-white rounded-r-lg"
-              >
-                <IoSearch />
-              </button>
-            </form>
+            <div>
+              <form className="flex justify-center w-full items-center">
+                <input
+                  type="text"
+                  name="search"
+                  className="p-[5px] w-full px-[10px] rounded-l-lg focus:outline-none bg-gray-50 border "
+                  placeholder="search"
+                />
+                <button
+                  type="submit"
+                  className="bg-red-500 p-[10px] text-white rounded-r-lg"
+                >
+                  <IoSearch />
+                </button>
+              </form>
+            </div>
           </div>
+
           <div>
             <div
               className={`${
@@ -209,7 +284,7 @@ const Navbar = () => {
                 )}
               </div>
 
-              <div className="flex justify-center my-2 smd:my-auto smd:block">
+              <div className=" hidden justify-center my-2 smd:my-auto smd:block">
                 <Link
                   onClick={() => setIsOpen(false)}
                   className="relative text-gray-700 transition-colors duration-300 transform hover:text-gray-600 dark:hover:text-red-500 text-[1.57rem]"
