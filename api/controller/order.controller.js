@@ -1,5 +1,7 @@
 import Order from "../model/order.model.js";
 import Product from "../model/product.model.js";
+import User from "../model/user.model.js";
+import sendEmail from "../utils/mailSender.js";
 export const createOrder = async (req, res) => {
   const {
     products,
@@ -11,15 +13,7 @@ export const createOrder = async (req, res) => {
     street,
     phoneNumber,
   } = req.body;
-  if (
-    !products ||
-    !userId ||
-    !name ||
-    !city ||
-    !state ||
-    !street ||
-    !phoneNumber
-  ) {
+  if (!products || !name || !city || !state || !street || !phoneNumber) {
     return res.status(400).json({ message: "All fields are required" });
   }
   if (!paymentMethod) {
@@ -27,12 +21,7 @@ export const createOrder = async (req, res) => {
       .status(400)
       .json({ message: "Please select your payment method" });
   }
-  // for (let i = 0; i < products.length; i++) {
-  //   const product = await Product.find({ _id: products[i].productId });
-  //   const total = product[0].price * products[i].amount;
 
-  //   console.table(total);
-  // }
   const totalPrice = await products.reduce(async (totalPromise, product) => {
     const total = await totalPromise;
     const foundProduct = await Product.findById(product.productId);
@@ -56,6 +45,17 @@ export const createOrder = async (req, res) => {
   });
   const newOrder = await order.save();
   if (newOrder) {
+    sendEmail(
+      process.env.EMAIL,
+      process.env.PASS,
+      "rtowhidur96@gmail.com",
+      `New Order from ${newOrder.phoneNumber}`,
+      `A user named ${
+        newOrder.name ? newOrder.name : "Unknown"
+      } placed a new order view order information by clicking the link https://hitekbd.onrender.com/order?id=${
+        newOrder._id
+      }`
+    );
     return res.status(200).json(newOrder);
   }
 };

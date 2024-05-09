@@ -40,13 +40,15 @@ const CheckOut = () => {
     if (localStorage.getItem("email")) {
       setLoading(true);
       getSetUserData(localStorage.getItem("email"));
+    } else {
+      setUserData({});
+      setLoading(false);
     }
   }, [cartItems]);
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
-    console.log(JSON.stringify(formData));
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -62,7 +64,11 @@ const CheckOut = () => {
     }
     if (response.ok) {
       alert("Order placed successfully");
-      navigate("/orders");
+      if (localStorage.getItem("email")) {
+        navigate("/orders");
+      } else {
+        navigate("/signin");
+      }
       clearCart();
     }
     const data = await response.json();
@@ -103,7 +109,7 @@ const CheckOut = () => {
                         type="text"
                         placeholder="Your Name"
                         className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#ff6565] outline-none"
-                        value={formData.name}
+                        value={formData?.name}
                         onChange={handleChange}
                         name="name"
                         required
@@ -115,7 +121,7 @@ const CheckOut = () => {
                       type="text"
                       placeholder="City"
                       className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#ff6565] outline-none"
-                      value={formData.city}
+                      value={formData?.city}
                       onChange={handleChange}
                       name="city"
                       required
@@ -124,7 +130,7 @@ const CheckOut = () => {
                       type="text"
                       placeholder="State"
                       className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#ff6565] outline-none"
-                      value={formData.state}
+                      value={formData?.state}
                       onChange={handleChange}
                       name="state"
                       required
@@ -133,16 +139,16 @@ const CheckOut = () => {
                       type="text"
                       placeholder="Street address"
                       className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#ff6565] outline-none"
-                      value={formData.street}
+                      value={formData?.street}
                       onChange={handleChange}
                       name="street"
                       required
                     />
                     <input
-                      type="text"
+                      type="number"
                       placeholder="Phone No."
                       className="px-4 py-3.5 bg-white text-[#333] w-full text-sm border-b-2 focus:border-[#ff6565] outline-none"
-                      value={formData.phoneNumber}
+                      value={formData?.phoneNumber}
                       onChange={handleChange}
                       name="phoneNumber"
                       required
@@ -155,7 +161,7 @@ const CheckOut = () => {
                           id="nagad"
                           name="paymentMethod"
                           onChange={handleChange}
-                          checked={formData.paymentMethod === "nagad"}
+                          checked={formData?.paymentMethod === "nagad"}
                           required
                         />
                         <label
@@ -175,7 +181,7 @@ const CheckOut = () => {
                           value="bkash"
                           name="paymentMethod"
                           onChange={handleChange}
-                          checked={formData.paymentMethod === "bkash"}
+                          checked={formData?.paymentMethod === "bkash"}
                           required
                         />
                         <label

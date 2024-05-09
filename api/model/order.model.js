@@ -6,7 +6,6 @@ const orderSchema = new mongoose.Schema({
   },
   userId: {
     type: String,
-    required: true,
   },
   price: {
     type: Number,
@@ -14,7 +13,6 @@ const orderSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: true,
   },
   status: {
     type: String,
