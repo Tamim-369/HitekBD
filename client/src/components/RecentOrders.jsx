@@ -4,7 +4,7 @@ import { ShopContext } from "../context/shop-context";
 
 const RecentOrders = () => {
   const [orders, setOrders] = useState([]);
-
+  const [filterStatus, setFilterStatus] = useState("all");
   const changeStatus = async (id) => {
     const res = await fetch(`api/products/setOrderStatus/${id}`, {
       method: "PUT",
@@ -22,7 +22,6 @@ const RecentOrders = () => {
       year: "numeric",
       month: "long",
       day: "numeric",
-      hour: "2-digit",
     };
     return date.toLocaleDateString("en-US", options);
   }
@@ -75,40 +74,73 @@ const RecentOrders = () => {
       <div className="w-full min-h-[64vh] sm:w-11/12 md:w-9/12 mx-auto px-2 py-8 sm:px-3 lg:px-8">
         <h1 className="text-2xl font-bold mb-6">Orders</h1>
         <div className="overflow-x-auto w-full shadow-md pb-3 rounded-lg">
+          <div className="btn-group mb-2 flex gap-1">
+            <button
+              onClick={() => {
+                setFilterStatus("all");
+              }}
+              className="py-1 px-2 text-sm bg-blue-600 rounded-md text-white"
+            >
+              All
+            </button>
+            <button
+              onClick={() => {
+                setFilterStatus("Shipped");
+              }}
+              className="py-1 px-2 text-sm bg-emerald-600 rounded-md text-white"
+            >
+              Shipped
+            </button>
+            <button
+              onClick={() => {
+                setFilterStatus("pending");
+              }}
+              className="py-1 px-2 text-sm bg-red-600 rounded-md text-white"
+            >
+              Pending
+            </button>
+          </div>
           <table className="w-full table-auto border-collapse bg-gray-100 ">
             <thead>
               <tr className="bg-gray-700">
-                <th className="px-4 py-3 text-left font-medium text-white">
+                <th className="px-4 py-1 text-sm text-left font-medium text-white">
                   Date
                 </th>
-                <th className="px-4 py-3 text-right font-medium text-white">
+                <th className="px-4 py-1 text-sm text-right xs:block hidden font-medium text-white">
                   Amount
                 </th>
-                <th className="px-4 py-3 text-center font-medium text-white">
+                <th className="px-4 py-1 text-sm text-center font-medium text-white">
                   Status
                 </th>
-                <th className="px-4 py-3 text-center font-medium text-white">
+                <th className="px-4 py-1 text-sm text-center font-medium text-white">
                   Action
                 </th>
               </tr>
             </thead>
             <tbody>
               {orders.map((order) => (
-                <tr className="border-b border-gray-700" key={order._id}>
-                  <td className="px-4 py-3 text-left">
+                <tr
+                  className={`border-b ${
+                    filterStatus == order.status ? "hidden" : ""
+                  } border-gray-700`}
+                  key={order._id}
+                >
+                  <td className="px-4 py-2 text-sm text-left">
                     {formatDate(order.date)}
                   </td>
-                  <td className="px-4 py-3 text-right">৳{order.price}</td>
-                  <td className="px-4 py-3 text-center flex justify-center items-center gap-1">
-                    <div
-                      className={`inline-block px-3 py-1 rounded-full text-xs font-medium  text-white ${
+                  <td className="px-4 py-2 text-sm text-right xs:block hidden">
+                    ৳{order.price}
+                  </td>
+                  <td className="px-4 py-2 text-sm text-right  gap-1">
+                    <button
+                      className={` px-3 py-1 rounded-full  text-xs font-medium  text-white ${
                         order.status == "pending"
-                          ? "bg-green-800"
-                          : "bg-red-800"
+                          ? "bg-red-800"
+                          : "bg-emerald-800"
                       } `}
                     >
                       {order.status}
-                    </div>
+                    </button>
                   </td>
                   <td className="">
                     <div className="flex justify-center items-center gap-1">

@@ -47,7 +47,7 @@ export const createOrder = async (req, res) => {
     products,
     userId,
     name,
-    price: totalPrice,
+    price: totalPrice + 120,
     city,
     paymentMethod,
     state,

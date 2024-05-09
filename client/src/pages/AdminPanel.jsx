@@ -26,6 +26,9 @@ import DashBoard from "../components/DashBoard";
 import UploadProduct from "../components/UploadProduct";
 import Delivered from "../components/Delivered";
 import RecentOrders from "../components/RecentOrders";
+import DashProducts from "../components/DashProducts";
+import { FiShoppingBag } from "react-icons/fi";
+
 const AdminPanel = () => {
   const [showMenu, setShowMenu] = useState(window.innerWidth >= 870);
   const [medium, setMedium] = useState(window.innerWidth >= 870);
@@ -142,17 +145,6 @@ const AdminPanel = () => {
               </button>
               <button
                 onClick={() => {
-                  setCurrentTab(<Delivered />);
-                }}
-                className="bg-gray-200 flex justify-start gap-2 items-center w-full text-black  rounded-md p-[0.6rem] font-medium"
-              >
-                <div className="icon text-2xl ">
-                  <IoBagCheckOutline />
-                </div>
-                <div className="text">Delivered</div>
-              </button>
-              <button
-                onClick={() => {
                   setCurrentTab(<RecentOrders />);
                   if (!medium) setShowMenu(false);
                 }}
@@ -161,7 +153,7 @@ const AdminPanel = () => {
                 <div className="icon text-2xl ">
                   <IoBagHandleOutline />
                 </div>
-                <div className="text">Recent Orders</div>
+                <div className="text">Orders</div>
               </button>
               <button
                 onClick={() => {
@@ -175,24 +167,19 @@ const AdminPanel = () => {
                 </div>
                 <div className="text">Upload Products</div>
               </button>
-              <Link
-                to="/adminPanel"
+
+              <button
+                onClick={() => {
+                  setCurrentTab(<DashProducts />);
+                  if (!medium) setShowMenu(false);
+                }}
                 className="bg-gray-200 flex justify-start gap-2 items-center w-full text-black  rounded-md p-[0.6rem] font-medium"
               >
                 <div className="icon text-2xl ">
-                  <FaRegEdit />
+                  <FiShoppingBag />
                 </div>
-                <div className="text">Delete Products</div>
-              </Link>
-              <Link
-                to="/adminPanel"
-                className="bg-gray-200 flex justify-start gap-2 items-center w-full text-black  rounded-md p-[0.6rem] font-medium"
-              >
-                <div className="icon text-2xl ">
-                  <RiDeleteBin6Line />
-                </div>
-                <div className="text">Delete Products</div>
-              </Link>
+                <div className="text">All Products</div>
+              </button>
               <Link
                 to="/adminPanel"
                 className="bg-gray-200 flex justify-start gap-2 items-center w-full text-black  rounded-md p-[0.6rem] font-medium"
@@ -202,7 +189,14 @@ const AdminPanel = () => {
                 </div>
                 <div className="text">Feedback</div>
               </Link>
-              <button className="bg-gray-200 flex justify-start gap-2 items-center w-full text-black  rounded-md p-[0.6rem] font-medium">
+              <button
+                onClick={() => {
+                  localStorage.removeItem("adminToken");
+                  localStorage.removeItem("adminName");
+                  navigate("/adminAuth");
+                }}
+                className="bg-gray-200 flex justify-start gap-2 items-center w-full text-black  rounded-md p-[0.6rem] font-medium"
+              >
                 <div className="icon text-2xl ">
                   <TbLogout />
                 </div>

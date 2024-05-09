@@ -17,6 +17,7 @@ const Navbar = () => {
   if (
     checkLocation == "/admin-panel" ||
     checkLocation == "/admin-auth" ||
+    checkLocation == "/editProduct" ||
     checkLocation == "/order"
   ) {
     return null;
