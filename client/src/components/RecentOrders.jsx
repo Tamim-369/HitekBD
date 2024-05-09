@@ -121,7 +121,9 @@ const RecentOrders = () => {
               {orders.map((order) => (
                 <tr
                   className={`border-b ${
-                    filterStatus == order.status ? "hidden" : ""
+                    filterStatus == order.status || filterStatus == "all"
+                      ? ""
+                      : "hidden"
                   } border-gray-700`}
                   key={order._id}
                 >
