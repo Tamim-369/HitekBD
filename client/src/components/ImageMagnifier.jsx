@@ -23,7 +23,7 @@ function ImageMagnifier({
     >
       <img
         src={src}
-        className="h-full my-5 w-full object-cover object-center"
+        className="h-96 my-5 w-full object-contain   object-center"
         style={{ height: height, width: width }}
         onMouseEnter={(e) => {
           // update image size and turn-on magnifier

@@ -54,6 +54,7 @@ const EditProduct = () => {
       formDataToSend.append("price", formData.price);
       formDataToSend.append("category", formData.category);
       formDataToSend.append("description", formData.description);
+      formDataToSend.append("discount", formData.discount);
       if (formData.image) formDataToSend.append("image", formData.image);
 
       const response = await fetch(`/api/products/update/${id}`, {
@@ -152,6 +153,23 @@ const EditProduct = () => {
               placeholder="Product Category"
             />
           </div>
+        </div>
+        <div className="w-full mb-3">
+          <label
+            htmlFor="discount"
+            className="text-xl font-medium text-gray-900 "
+          >
+            Enter Discount
+          </label>
+          <input
+            type="number"
+            name="discount"
+            onChange={handleChange}
+            value={formData.discount}
+            id="discount"
+            className="p-3 mt-2 placeholder:font-medium bg-gray-50 border-b-2 focus:outline-none border-gray-900 w-full"
+            placeholder="Product discount"
+          />
         </div>
         <div className="w-full mb-3">
           <label

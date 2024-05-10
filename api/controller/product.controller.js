@@ -19,7 +19,7 @@ export const getAllProducts = async (req, res) => {
 };
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, price, category } = req.body;
+    const { name, description, price, category, discount } = req.body;
     const file = req.file; // Access uploaded file
     console.log("Uploaded file:", req.file);
 
@@ -35,6 +35,7 @@ export const createProduct = async (req, res) => {
       name,
       description,
       price,
+      discount,
       category,
       image: imgUrl,
     });
@@ -74,7 +75,7 @@ export const deleteProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const productId = req.params.id; // Extract product ID from URL parameter
-    const { name, description, price, category } = req.body;
+    const { name, description, price, category, discount } = req.body;
     const file = req.file; // Access uploaded file
 
     // Check if the product ID is provided
@@ -95,6 +96,7 @@ export const updateProduct = async (req, res) => {
     if (description) product.description = description;
     if (price) product.price = price;
     if (category) product.category = category;
+    if (discount) product.discount = discount;
 
     // If a new image file is uploaded, update the image URL
     if (file) {

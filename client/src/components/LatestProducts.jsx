@@ -44,14 +44,7 @@ const LatestProducts = ({ getAllProducts }) => {
           <div className="container px-5 py-8 w-full mx-auto flex flex-col justify-center items-center">
             <div className="grid lg:grid-cols-3 w-full sm:grid-cols-2 grid-cols-1 gap-4 -m-4  justify-center items-start">
               {products.map((product) => (
-                <ProductCard
-                  name={product.name}
-                  price={product.price}
-                  category={product.category}
-                  image={product.image}
-                  key={product._id}
-                  id={product._id}
-                />
+                <ProductCard product={product} />
               ))}
             </div>
             <div className="text-center mt-10">

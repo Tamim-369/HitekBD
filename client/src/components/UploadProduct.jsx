@@ -135,6 +135,23 @@ const UploadProduct = () => {
         </div>
         <div className="w-full mb-3">
           <label
+            htmlFor="discount"
+            className="text-xl font-medium text-gray-900 "
+          >
+            Enter discount
+          </label>
+          <input
+            type="number"
+            name="discount"
+            onChange={handleChange}
+            id="discount"
+            className="p-3 mt-2 placeholder:font-medium bg-gray-50 border-b-2 focus:outline-none border-gray-900 w-full"
+            placeholder="Product discount"
+            required
+          />
+        </div>
+        <div className="w-full mb-3">
+          <label
             htmlFor="description"
             className="text-xl font-medium text-gray-900 "
           >
