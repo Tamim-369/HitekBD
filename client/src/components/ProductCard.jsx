@@ -60,26 +60,29 @@ const ProductCard = ({ product, hide }) => {
             <>৳{product.price}</>
           )}
         </div>
-        <div className="flex xs:mt-2 flex-col-reverse w-11/12  gap-2 md:flex-row xs:justify-between xs:items-start ">
-          <div className={`flex justify-center items-center`}>
-            <button
-              onClick={() => removeFromCart(product._id)}
-              className="group rounded-l-xl px-3 py-[9px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white text-black"
-            >
-              <FaMinus />
-            </button>
-            <input
-              className="border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-14   placeholder:text-gray-900 bg-white py-[3px] text-center bg-transparent"
-              value={cartItems[product._id] || 0}
-              type="text"
-            />
-            <button
-              onClick={() => addToCart(product._id)}
-              className="group rounded-r-xl px-3 py-[9px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50 text-black"
-            >
-              <FaPlus />
-            </button>
-          </div>
+        <div className="flex xs:mt-2 flex-col justify-center w-11/12  gap-2 md:flex-row xs:justify-between xs:items-start ">
+          {cartItems[product._id] > 0 && (
+            <div className={`flex justify-center items-center`}>
+              <button
+                onClick={() => removeFromCart(product._id)}
+                className="group rounded-l-xl px-3 py-[9px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white text-black"
+              >
+                <FaMinus />
+              </button>
+              <input
+                className="border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-14   placeholder:text-gray-900 bg-white py-[3px] text-center bg-transparent"
+                value={cartItems[product._id] || 0}
+                type="text"
+              />
+              <button
+                onClick={() => addToCart(product._id)}
+                className="group rounded-r-xl px-3 py-[9px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50 text-black"
+              >
+                <FaPlus />
+              </button>
+            </div>
+          )}
+
           <div className="flex  items-center  ">
             {" "}
             <button
@@ -91,7 +94,7 @@ const ProductCard = ({ product, hide }) => {
                 location == "/" || location == "/#latest"
                   ? "xs:text-sm"
                   : "text-sm"
-              } xs:shadow-sm   shadow-gray-500 text-white px-[0.73rem] py-2 rounded-xl`}
+              } xs:shadow-sm   shadow-gray-500 text-white px-[0.73rem] py-2 rounded-lg`}
             >
               Add to Cart
             </button>

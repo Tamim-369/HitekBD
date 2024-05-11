@@ -190,7 +190,7 @@ const Navbar = () => {
               />
               <button
                 type="submit"
-                className="bg-red-500 p-[10px] text-white rounded-r-lg"
+                className="bg-red-600 p-[10px] text-white rounded-r-lg"
               >
                 <IoSearch />
               </button>
