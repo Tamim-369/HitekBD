@@ -61,7 +61,7 @@ const ProductCard = ({ product, hide }) => {
           )}
         </div>
         <div className="flex xs:mt-2 flex-col-reverse w-11/12  gap-2 md:flex-row xs:justify-between xs:items-start ">
-          <div className="flex flex-1 items-center  ">
+          <div className={`flex justify-center items-center`}>
             <button
               onClick={() => removeFromCart(product._id)}
               className="group rounded-l-xl px-3 py-[9px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white text-black"
@@ -69,9 +69,9 @@ const ProductCard = ({ product, hide }) => {
               <FaMinus />
             </button>
             <input
-              className="border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-20  placeholder:text-gray-900 bg-white py-[3px] text-center bg-transparent"
+              className="border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-14   placeholder:text-gray-900 bg-white py-[3px] text-center bg-transparent"
               value={cartItems[product._id] || 0}
-              type="number"
+              type="text"
             />
             <button
               onClick={() => addToCart(product._id)}
@@ -80,21 +80,21 @@ const ProductCard = ({ product, hide }) => {
               <FaPlus />
             </button>
           </div>
-          <div className="flex justify-center items-center flex-col">
-            <Link
-              to={`/product?id=${product._id}`}
-              className="w-full flex justify-center items-center flex-col "
+          <div className="flex  items-center  ">
+            {" "}
+            <button
+              onClick={() => {
+                addToCart(product._id);
+                setCartClicked(true);
+              }}
+              className={`bg-red-600 xs:w-auto  text-sm xs:text-sm w-full ${
+                location == "/" || location == "/#latest"
+                  ? "xs:text-sm"
+                  : "text-sm"
+              } xs:shadow-sm   shadow-gray-500 text-white px-[0.73rem] py-2 rounded-xl`}
             >
-              <button
-                className={`bg-red-600 xs:w-auto  text-sm xs:text-sm w-full ${
-                  location == "/" || location == "/#latest"
-                    ? "xs:text-sm"
-                    : "text-sm"
-                } xs:shadow-sm  shadow-gray-500 text-white px-3 py-2 rounded-lg`}
-              >
-                Buy Now
-              </button>
-            </Link>
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>
