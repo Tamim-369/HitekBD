@@ -7,20 +7,22 @@ const Products = ({ getAllProducts }) => {
   const [toggleCategory, setToggleCategory] = useState(false);
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState("All");
-  const [sortBy, setSortBy] = useState("latest"); // State to track sorting
-
+  const [sortedProducts, setSortedProducts] = useState(products);
   const [discount, setDiscount] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSortBy = (value) => {
-    setSortBy(value);
+  const showOldest = async () => {
+    const sorted = [...products].sort(
+      (a, b) => new Date(a.date) - new Date(b.date)
+    );
+    setSortedProducts(sorted);
   };
-  const sortedProducts = () => {
-    if (sortBy === "oldest") {
-      return products.sort((a, b) => new Date(a.date) - new Date(b.date));
-    } else {
-      return products.sort((a, b) => new Date(b.date) - new Date(a.date));
-    }
+
+  const showLatest = async () => {
+    const sorted = [...products].sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
+    setSortedProducts(sorted);
   };
   useEffect(() => {
     (async () => {
@@ -30,15 +32,18 @@ const Products = ({ getAllProducts }) => {
       setLoading(false);
     })();
   }, []);
+  useEffect(() => {
+    setProducts(sortedProducts);
+  }, [sortedProducts]);
 
   return (
     <div className="w-full flex smd:flex-row flex-col min-h-[66dvh] bg-gray-50">
-      <div className="w-full smd:w-3/12  flex bg-gray-50 justify-start items-start  smd:min-h-screen min-h-48">
-        <div className="main mx-2 smd:ml-4 py-3 px-2 rounded-xl mt-2 smd:mt-4 flex flex-col justify-center items-center">
-          <div className="filters flex flex-col justify-center items-start ">
-            <div className="category">
+      <div className="w-full smd:w-3/12  flex bg-gray-50 justify-start items-start  smd:min-h-screen ">
+        <div className="main mx-2 smd:ml-4 py-3 px-2 rounded-xl mt-2 smd:mt-4 flex flex-col justify-center items-center w-full">
+          <div className="filters w-full flex smd:flex-col justify-center items-start ">
+            <div className="category w-full">
               <h3 className="text-lg font-bold p-1">Categories</h3>
-              <div className="btn-group flex flex-wrap">
+              <div className="btn-group flex flex-wrap w-full">
                 <button
                   onClick={() => {
                     setCategory("All");
@@ -73,10 +78,10 @@ const Products = ({ getAllProducts }) => {
                 </button>
               </div>
             </div>
-            <div className="checks">
+            <div className="checks smd:w-auto w-[100%]">
               <h3 className="text-lg font-bold p-1">Filters</h3>
-              <div className="btn-group flex flex-wrap p-1">
-                <div className="flex gap-1 flex-col pl-1">
+              <div className="btn-group flex flex-wrap  p-1">
+                <div className="smd:flex grid grid-cols-1 sm:grid-cols-2 gap-2 smd:flex-col justify-center items-center pl-1">
                   <div className="flex items-center mb-1">
                     <input
                       id="country-option-1"
@@ -101,7 +106,7 @@ const Products = ({ getAllProducts }) => {
                       id="country-option-2"
                       type="radio"
                       name="countries"
-                      onClick={() => handleSortBy("oldest")}
+                      onClick={() => showOldest()}
                       defaultValue="USA"
                       className="h-4 w-4 border-gray-300 focus:ring-2 focus:ring-blue-300"
                       aria-labelledby="country-option-1"
@@ -115,12 +120,12 @@ const Products = ({ getAllProducts }) => {
                       Oldest to latest
                     </label>
                   </div>
-                  <div className="flex items-center mb-4">
+                  <div className="flex items-center mb-1">
                     <input
                       id="country-option-3"
                       type="radio"
                       name="countries"
-                      onClick={() => handleSortBy("oldest")}
+                      onClick={() => showLatest()}
                       defaultValue="USA"
                       className="h-4 w-4 border-gray-300 focus:ring-2 focus:ring-blue-300"
                       aria-labelledby="country-option-1"
@@ -145,7 +150,9 @@ const Products = ({ getAllProducts }) => {
           <section className="text-gray-600 body-font w-full flex flex-col justify-center items-center">
             <div className=" py-5 w-full mx-auto flex flex-col justify-center items-center">
               {loading ? (
-                <Loader />
+                <div className="w-full h-96 animate-pulse  flex justify-center items-center">
+                  <Loader />
+                </div>
               ) : (
                 <div className="grid md:w-full sm:grid-cols-3 lg:grid-cols-3 smd:grid-col-3  w-full grid-cols-1 xs:grid-cols-2 gap-2 xs:px-auto px-2 xs:gap-3 sm:gap-1 md:gap-1 lg:gap-2 -m-4  justify-center items-start ">
                   {products.map((product) => (

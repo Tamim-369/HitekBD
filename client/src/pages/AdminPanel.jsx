@@ -80,14 +80,13 @@ const AdminPanel = () => {
           >
             <RiMenuLine />
           </div>
-          <div className="logo border-white border-2 rounded-full">
+          <div className="logo h-14 flex justify-center items-center border-white border-2 rounded-full">
             <img
-              src="https://scontent.fdac138-1.fna.fbcdn.net/v/t39.30808-6/412258930_367804015792224_1256144017821934788_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFLrOUGfiCBD4-ELL1oTEFks7h-xX0jN7uzuH7FfSM3u_rfdFPIoPeN_eUvJqaCdtiK-kVBGJlwnUr-EcXFZegC&_nc_ohc=j-y3WW4Im0QQ7kNvgH5Lboa&_nc_ht=scontent.fdac138-1.fna&oh=00_AfB_NEOusDTq1IRgSK0YBLheczQRttjWMyztrBRn_Qvw0A&oe=663D694C"
+              src="logo-tr.png"
               alt=""
-              className="h-14 rounded-full border-4 border-white"
+              className="h-10  rounded-full border-4 border-white"
             />
           </div>
-          <div className="text-xl font-semibold">Tanvir</div>
         </div>
 
         {/* <div className="path flex justify-center items-center gap-1">

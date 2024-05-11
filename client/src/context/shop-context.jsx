@@ -23,6 +23,10 @@ export const ShopContextProvider = ({ children }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [addedProducts, setAddedProducts] = useState(false);
   const [checkOutProducts, setCheckOutProducts] = useState([]);
+  const discountedPrice = (mainPrice, discount) => {
+    return mainPrice - (mainPrice * discount) / 100;
+  };
+
   useEffect(() => {
     getDefaultCart().then((defaultCart) => {
       setCartItems(defaultCart);
@@ -45,7 +49,8 @@ export const ShopContextProvider = ({ children }) => {
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
         let itemInfo = products.find((product) => product._id === item);
-        totalAmount += cartItems[item] * itemInfo.price;
+        totalAmount +=
+          cartItems[item] * discountedPrice(itemInfo.price, itemInfo.discount);
       }
     }
     return totalAmount;

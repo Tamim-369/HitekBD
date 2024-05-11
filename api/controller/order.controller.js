@@ -2,6 +2,9 @@ import Order from "../model/order.model.js";
 import Product from "../model/product.model.js";
 import User from "../model/user.model.js";
 import sendEmail from "../utils/mailSender.js";
+const discountedPrice = (mainPrice, discount) => {
+  return mainPrice - (mainPrice * discount) / 100;
+};
 export const createOrder = async (req, res) => {
   const {
     products,
@@ -23,11 +26,15 @@ export const createOrder = async (req, res) => {
   }
 
   const totalPrice = await products.reduce(async (totalPromise, product) => {
-    const total = await totalPromise;
-    const foundProduct = await Product.findById(product.productId);
+    let total = await totalPromise;
+    let foundProduct = await Product.findById(product.productId);
     console.log("Product Price:", foundProduct.price);
     console.log("Product Amount:", product.amount);
-    return total + foundProduct.price * product.amount;
+    return (
+      total +
+      discountedPrice(foundProduct.price, foundProduct.discount) *
+        product.amount
+    );
   }, Promise.resolve(0));
 
   console.log("Total Price:", totalPrice);

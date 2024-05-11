@@ -8,9 +8,13 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
   discount: {
     type: Number,
     default: 0,
+  },
+  review: {
+    type: String,
   },
   price: {
     type: Number,
@@ -23,6 +27,10 @@ const productSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
   },
 });
 const Product = mongoose.model("Product", productSchema);

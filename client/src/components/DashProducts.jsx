@@ -26,9 +26,10 @@ const DashProducts = () => {
       },
     });
     const data = await response.json();
-    setAllProducts(data);
-    setFilteredProducts(data); // Set filteredProducts initially to all products
-    setData(data);
+    const sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort products by date in descending order
+    setAllProducts(sortedData);
+    setFilteredProducts(sortedData); // Set filteredProducts initially to all products
+    setData(sortedData);
   };
 
   useEffect(() => {

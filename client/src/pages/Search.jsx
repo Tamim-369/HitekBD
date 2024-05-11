@@ -26,7 +26,7 @@ const Search = ({ getAllProducts }) => {
     };
 
     fetchData(); // Invoke the function
-  }, []);
+  }, [getAllProducts, query]);
 
   return (
     <div className="w-full min-h-[66dvh] bg-gray-100">

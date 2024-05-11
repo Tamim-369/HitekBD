@@ -57,6 +57,7 @@ function App() {
       },
     });
     const data = await response.json();
+    // console.log(JSON.stringify(data));
     return data;
   };
   return (

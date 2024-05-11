@@ -177,7 +177,12 @@ const Order = () => {
                   changeStatus(orderId);
                   setText("Order Shipped");
                 }}
-                className="mt-6 w-full rounded-md bg-red-500 py-1.5 font-medium text-red-50 hover:bg-red-600"
+                className={`mt-6 ${
+                  localStorage.getItem("adminToken") ||
+                  localStorage.getItem("adminName")
+                    ? ""
+                    : "hidden"
+                } w-full rounded-md bg-red-500 py-1.5 font-medium text-red-50 hover:bg-red-600`}
               >
                 {text}
               </button>

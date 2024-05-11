@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { ShopContext } from "../context/shop-context";
+import RecomendProduct from "../components/RecomendProduct";
 const Product = ({ getOneProduct }) => {
   const [product, setProduct] = useState({});
   const location = useLocation();
@@ -29,7 +30,7 @@ const Product = ({ getOneProduct }) => {
           <Loader />
         </div>
       ) : (
-        <div>
+        <div className="flex flex-col justify-center items-center min-h-screen">
           <section className="text-gray-600 body-font overflow-hidden ">
             <div className="container px-5 pt-5 mx-auto">
               <div className="lg:w-4/5 mx-auto flex flex-wrap items-center">
@@ -50,9 +51,11 @@ const Product = ({ getOneProduct }) => {
                   <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
                     {product.name}
                   </h1>
-                  <p className="leading-relaxed">{product.description}</p>
+                  <p className="leading-relaxed whitespace-pre-wrap">
+                    {product.description}
+                  </p>
                   <div className="title-font font-medium text-2xl pt-5 text-gray-900">
-                    ৳{product.price}
+                    ৳{product.price - (product.price * product.discount) / 100}
                   </div>
                   <div className="flex mt-3 items-center border-b-2 border-red-400 mb-5"></div>
 
@@ -87,11 +90,31 @@ const Product = ({ getOneProduct }) => {
                       >
                         Add to Cart
                       </button>
+                      {product.review ? (
+                        <a
+                          href={product.review}
+                          className="flex ml-auto text-white bg-red-600  shadow-lg border-0 py-2 px-6 focus:outline-none  rounded-lg"
+                        >
+                          Review
+                        </a>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          </section>
+          <section className="recomended flex flex-col justify-center items-center bg-white mt-5">
+            <h1 className="text-2xl font-bold text-gray-900 mt-4 mb-2 ">
+              Suggested
+            </h1>
+            <RecomendProduct
+              id={product._id}
+              category={product.category}
+              discount={product.discount}
+            />
           </section>
         </div>
       )}

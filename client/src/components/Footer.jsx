@@ -6,7 +6,6 @@ const Footer = () => {
   return (
     <>
       {location == "/checkout" ||
-      location == "/product" ||
       location == "/combo" ||
       location == "/signin" ||
       location == "/signup" ||

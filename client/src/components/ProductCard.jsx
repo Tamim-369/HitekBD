@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
-
-const ProductCard = ({ product }) => {
+import { ShopContext } from "../context/shop-context";
+import { FaMinus, FaPlus } from "react-icons/fa";
+const ProductCard = ({ product, hide }) => {
+  const { addToCart, removeFromCart, cartItems } = useContext(ShopContext);
   // false should be replaced by the product id
   const location = useLocation().pathname;
   console.log(product.discount);
   return (
     <div
-      className={`lg:w-full max-h-full ${
+      className={`lg:w-full max-h-full ${hide ? "hidden" : ""} ${
         location === "/" || location === "/#latest" ? "my-auto " : "md:my-3"
       }  p-2  xs:p-1 mx-auto  w-full xs:w-full sm:w-full md:w-full  bg-transparent  rounded-xl`}
     >
@@ -17,11 +19,13 @@ const ProductCard = ({ product }) => {
           location == "/" || location == "/#latest"
             ? "  rounded-xl duration-300 "
             : ""
-        } relative sm:w-auto w-full   overflow-hidden`}
+        } relative  ${
+          location === "/product" ? "h-56 " : "h-full sm:w-auto w-full"
+        }  overflow-hidden rounded-xl`}
       >
         <img
           alt="ecommerce"
-          className={` w-full h-48 object-cover 2xs:object-cover object-center block bg-gradient-to-tl from-gray-400 to-gray-200 `}
+          className={`h-full  w-full object-cover 2xs:object-cover  object-center block bg-gradient-to-tl from-gray-400 to-gray-200 `}
           src={`${product.image}`}
         />
       </Link>
@@ -33,9 +37,49 @@ const ProductCard = ({ product }) => {
           {product.name}
         </h2>
         <p className="text-sm xs:text-sm sm:text-base">
-          {product.description.slice(0, 70)}
+          {product.description.slice(0, 70)}...
         </p>
-        <div className="flex xs:mt-2 flex-col-reverse gap-2 md:flex-row xs:justify-between xs:items-start ">
+        <div className="text-xs xs:text-sm mt-2">
+          {" "}
+          {product.discount > 0 ? (
+            <div className="text-xs">
+              <div className="flex gap-2 justify-start items-center">
+                <del className="text-gray-500 font-mono font-semibold">
+                  ৳{product.price}
+                </del>{" "}
+                <div className="text-red-700 font-bold">
+                  {" "}
+                  <b>{product.discount}% </b> Off
+                </div>
+              </div>
+              <b className="text-red-700 text-sm">
+                ৳{product.price - (product.price * product.discount) / 100}
+              </b>
+            </div>
+          ) : (
+            <>৳{product.price}</>
+          )}
+        </div>
+        <div className="flex xs:mt-2 flex-col-reverse w-11/12  gap-2 md:flex-row xs:justify-between xs:items-start ">
+          <div className="flex flex-1 items-center  ">
+            <button
+              onClick={() => removeFromCart(product._id)}
+              className="group rounded-l-xl px-3 py-[9px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white text-black"
+            >
+              <FaMinus />
+            </button>
+            <input
+              className="border-y border-gray-200 outline-none text-gray-900 font-semibold text-lg w-20  placeholder:text-gray-900 bg-white py-[3px] text-center bg-transparent"
+              value={cartItems[product._id] || 0}
+              type="number"
+            />
+            <button
+              onClick={() => addToCart(product._id)}
+              className="group rounded-r-xl px-3 py-[9px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50 text-black"
+            >
+              <FaPlus />
+            </button>
+          </div>
           <div className="flex justify-center items-center flex-col">
             <Link
               to={`/product?id=${product._id}`}
@@ -51,27 +95,6 @@ const ProductCard = ({ product }) => {
                 Buy Now
               </button>
             </Link>
-          </div>
-          <div className="mt-1 text-xs xs:text-sm">
-            {" "}
-            {product.discount > 0 ? (
-              <div className="text-xs">
-                <div className="flex gap-2 justify-start items-center">
-                  <del className="text-gray-500 font-mono font-semibold">
-                    ৳{product.price}
-                  </del>{" "}
-                  <div className="text-red-700 font-bold">
-                    {" "}
-                    <b>{product.discount}% </b> Off
-                  </div>
-                </div>
-                <b className="text-red-700 text-sm">
-                  ৳{(product.price * 100 - product.discount) / 100}
-                </b>
-              </div>
-            ) : (
-              <>৳{product.price}</>
-            )}
           </div>
         </div>
       </div>
