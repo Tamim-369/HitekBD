@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/shop-context";
 import Loader from "../components/Loader";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CheckOut = () => {
   const { cartItems, getUser, finalProducts, clearCart } =
@@ -63,7 +65,8 @@ const CheckOut = () => {
       alert(response.json().message);
     }
     if (response.ok) {
-      alert("Order placed successfully");
+      toast.success("order placed successfully");
+
       if (localStorage.getItem("email")) {
         navigate("/orders");
       } else {
@@ -72,7 +75,6 @@ const CheckOut = () => {
       clearCart();
     }
     const data = await response.json();
-    console.log(data);
   };
   return (
     <div>
