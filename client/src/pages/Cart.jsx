@@ -76,31 +76,15 @@ const Cart = ({ getOneProduct, getAllProducts }) => {
               <div className="flex items-center w-full flex-col sm:flex-row justify-center gap-3 mt-8">
                 <button
                   onClick={() => navigate(-1)}
-                  className="rounded-lg w-full max-w-[280px] py-4 text-center justify-center items-center bg-gray-200 font-semibold text-sm text-black border border-gray-300 flex transition-all duration-500 "
+                  className="rounded-lg  p-3 text-center justify-center items-center bg-gray-200 font-semibold text-sm text-black border border-gray-300 flex transition-all duration-500 "
                 >
                   Continue Shopping
                 </button>
                 <Link
                   to={"/checkout"}
-                  className="rounded-lg w-full max-w-[280px] py-4 text-center justify-center items-center bg-red-600 font-semibold text-sm text-white flex transition-all duration-500 hover:bg-red-700"
+                  className="rounded-lg p-3 text-center justify-center items-center bg-red-600 font-semibold text-sm text-white flex transition-all duration-500 hover:bg-red-700"
                 >
                   Checkout
-                  <svg
-                    className="ml-2"
-                    fill="none"
-                    height="22"
-                    viewBox="0 0 23 22"
-                    width="23"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M8.75324 5.49609L14.2535 10.9963L8.75 16.4998"
-                      stroke="white"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.6"
-                    />
-                  </svg>
                 </Link>
               </div>
             ) : (

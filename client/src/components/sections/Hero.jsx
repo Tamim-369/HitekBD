@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import Carousel from "../Carousel";
 import Button from "../Button";
 import { Link, useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Hero = () => {
   const images = ["/watch.png", "/fan.png", "/airpod.png"];
   const location = useLocation();
@@ -21,7 +23,7 @@ const Hero = () => {
         id="hero"
         className="relative z-0 p-2 bg-transparent  my-auto bottom-12"
       ></div>
-      <div className="sm:h-[60vh] h-[100vh] my-auto md:bg-inherit ">
+      <div className="sm:h-[60vh] h-[75vh] my-auto md:bg-inherit ">
         <div className="bg-transparent flex  sm:mt-20 md:mt-20  md:w-10/12 mx-auto md:flex-row flex-col justify-center flex-wrap md:flex-nowrap items-center">
           <div className="hero w-full flex flex-col justify-center items-center   box-border p-10 md:flex-1 ">
             <div className="hero-content mx-auto md:w-full sm:pt-0 pt-96 text-center sm:w-10/12 md:text-left md:justify-start items-center justify-center  md:mt-0 mt-10 absolute md:relative z-10 md:z-auto flex-col lg:flex-row-reverse">

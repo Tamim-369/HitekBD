@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 export const ShopContext = createContext(null);
 
@@ -22,6 +23,7 @@ export const ShopContextProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [addedProducts, setAddedProducts] = useState(false);
+
   const [checkOutProducts, setCheckOutProducts] = useState([]);
   const discountedPrice = (mainPrice, discount) => {
     return mainPrice - (mainPrice * discount) / 100;

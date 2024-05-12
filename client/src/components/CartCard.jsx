@@ -10,7 +10,7 @@ const CartCard = ({
 }) => {
   return (
     <>
-      <div className="grid grid-cols-2 w-full lg:grid-cols-2 min-[550px]:gap-3 border-t bg-gray-50 border shadow-md px-3 rounded-xl mb-2 py-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 w-full lg:grid-cols-2 min-[550px]:gap-3 border-t bg-gray-50 border shadow-md px-3 rounded-xl mb-2 py-3">
         <div className="flex items-center flex-col min-[550px]:flex-row gap-1 min-[550px]:gap-3 w-full max-xl:justify-center max-xl:max-w-xl max-xl:mx-auto">
           <div className="img-box rounded-xl h-full w-full">
             <img

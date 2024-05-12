@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./App.css";
 import "./scroll.css";
@@ -28,6 +28,9 @@ import { ShopContextProvider } from "./context/shop-context";
 import Order from "./components/Order";
 import EditProduct from "./components/EditProduct";
 import Search from "./pages/Search";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   const getUser = async (email) => {
     const response = await fetch(`/api/users/find/${email}`, {
@@ -60,6 +63,7 @@ function App() {
     // console.log(JSON.stringify(data));
     return data;
   };
+
   return (
     <>
       <BrowserRouter>

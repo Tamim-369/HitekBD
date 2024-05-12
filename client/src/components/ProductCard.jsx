@@ -2,11 +2,15 @@ import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ShopContext } from "../context/shop-context";
 import { FaMinus, FaPlus } from "react-icons/fa";
+
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 const ProductCard = ({ product, hide }) => {
   const { addToCart, removeFromCart, cartItems } = useContext(ShopContext);
   // false should be replaced by the product id
   const location = useLocation().pathname;
   console.log(product.discount);
+
   return (
     <div
       className={`lg:w-full max-h-full ${hide ? "hidden" : ""} ${
@@ -64,7 +68,12 @@ const ProductCard = ({ product, hide }) => {
           {cartItems[product._id] > 0 && (
             <div className={`flex justify-center items-center`}>
               <button
-                onClick={() => removeFromCart(product._id)}
+                onClick={() => {
+                  removeFromCart(product._id);
+                  if (cartItems[product._id] < 2) {
+                    toast.warning(`${product.name} removed from cart`);
+                  }
+                }}
                 className="group rounded-l-xl px-3 py-[9px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white text-black"
               >
                 <FaMinus />
@@ -88,7 +97,9 @@ const ProductCard = ({ product, hide }) => {
             <button
               onClick={() => {
                 addToCart(product._id);
-                setCartClicked(true);
+                if (cartItems[product._id] < 1) {
+                  toast.success(`${product.name} added to cart`);
+                }
               }}
               className={`bg-red-600 xs:w-auto  text-sm xs:text-sm w-full ${
                 location == "/" || location == "/#latest"
