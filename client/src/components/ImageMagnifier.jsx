@@ -15,6 +15,7 @@ function ImageMagnifier({
   const [showMagnifier, setShowMagnifier] = useState(false);
   return (
     <div
+      className="h-full w-full "
       style={{
         position: "relative",
         height: height,
@@ -23,8 +24,8 @@ function ImageMagnifier({
     >
       <img
         src={src}
-        className="h-96 my-5 w-full object-contain   object-center"
-        style={{ height: height, width: width }}
+        className="w-full h-full mx-auto xs:object-contain object-cover   object-center"
+        // style={{ height: height, width: width }}
         onMouseEnter={(e) => {
           // update image size and turn-on magnifier
           const elem = e.currentTarget;

@@ -5,10 +5,12 @@ import Loader from "../components/Loader";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { ShopContext } from "../context/shop-context";
 import RecomendProduct from "../components/RecomendProduct";
+import "../image-scroll.css";
 const Product = ({ getOneProduct }) => {
   const [product, setProduct] = useState({});
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const [mainImg, setMainImg] = useState("/airpod.png");
   const productId = queryParams.get("id");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -32,19 +34,50 @@ const Product = ({ getOneProduct }) => {
       ) : (
         <div className="flex flex-col justify-center items-center min-h-screen">
           <section className="text-gray-600 body-font overflow-hidden ">
-            <div className="container px-5 pt-5 mx-auto">
-              <div className="lg:w-4/5 mx-auto flex flex-wrap items-center">
-                <div className="lg:w-1/2  w-full lg:h-auto   object-scale-down object-center rounded">
-                  <ImageMagnifier
-                    src={`${product?.image}`}
-                    width="full"
-                    height="full"
-                    magnifierHeight={150}
-                    magnifierWidth={170}
-                    zoomLevel={2}
-                  />
+            <div className=" sm:container  px-4 md:px-20  pt-5 mx-auto">
+              <div className="w-full mx-auto flex  flex-wrap items-center">
+                <div className="lg:w-1/2 my-5 w-full  sm:h-full  flex flex-col-reverse sm:flex-row object-scale-down object-center rounded">
+                  <div className="w-full sm:ml-4 flex sm:flex-row flex-col-reverse">
+                    <div className="flex sm:flex-col sm:mr-4 md:mr-2 sm:h-96  sm:w-32  my-auto image-scroll overflow-x-auto sm:overflow-y-auto sm:border-r-2 border-r-2 border-l-2 sm:border-l-0  border-gray-300  h-32 w-full bg-gray-200 py-4 sm:py-2 sm:px-1  px-2">
+                      <img
+                        className="w-full  sm:my-1 h-full rounded-md  bg-white mx-2 sm:mx-0 object-contain object-center cursor-pointer"
+                        src={product.image}
+                        onClick={() => setMainImg(product.image)}
+                      />
+                      <img
+                        className="w-full  sm:my-1 h-full rounded-md  bg-white mx-2 sm:mx-0 object-contain object-center cursor-pointer"
+                        src={product.image}
+                        onClick={() => setMainImg(product.image)}
+                      />
+                      <img
+                        className="w-full  sm:my-1 h-full rounded-md  bg-white mx-2 sm:mx-0 object-contain object-center cursor-pointer"
+                        src={product.image}
+                        onClick={() => setMainImg(product.image)}
+                      />
+                      <img
+                        className="w-full  sm:my-1 h-full rounded-md  bg-white mx-2 sm:mx-0 object-contain object-center cursor-pointer"
+                        src={product.image}
+                        onClick={() => setMainImg(product.image)}
+                      />
+                      <img
+                        className="w-full  sm:my-1 h-full rounded-md  bg-white mx-2 sm:mx-0 object-contain object-center cursor-pointer"
+                        src={product.image}
+                        onClick={() => setMainImg(product.image)}
+                      />
+                    </div>
+                    <div className="my-auto h-96">
+                      <ImageMagnifier
+                        src={`${mainImg}`}
+                        width="full"
+                        height="full"
+                        magnifierHeight={150}
+                        magnifierWidth={170}
+                        zoomLevel={2.5}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+                <div className="lg:w-1/2 w-full sm:mt-0 mt-3  lg:pl-10 lg:py-6  ">
                   <h2 className="text-sm title-font text-gray-500 tracking-widest">
                     {product.category}
                   </h2>
