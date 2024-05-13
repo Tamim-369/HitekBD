@@ -99,31 +99,22 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
+    // Update fields other than images
     if (name) product.name = name;
     if (description) product.description = description;
     if (price) product.price = price;
     if (category) product.category = category;
     if (discount) product.discount = discount;
 
-    // If new images are uploaded, upload them to Cloudinary
-    const imgUrls = await Promise.all(
-      files.map(async (file) => {
-        const img = await cloudinary.uploader.upload(file.path, {
-          folder: "products",
-          width: 500, // Set the width and height to make the image square
-          height: 500,
-          crop: "fill",
-        });
-        return img.secure_url;
-      })
-    );
+    // If new images are uploaded, ignore them
 
     // Concatenate the new image URLs with existing ones
-    product.images = imgUrls;
 
-    await product.save();
+    const newProduct = await Product.findByIdAndUpdate(productId, product, {
+      new: true,
+    });
 
-    res.status(200).json(product);
+    res.status(200).json(newProduct);
   } catch (error) {
     console.error("Error updating product:", error);
     res

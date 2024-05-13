@@ -56,11 +56,6 @@ const EditProduct = () => {
       formDataToSend.append("category", formData.category);
       formDataToSend.append("description", formData.description);
       formDataToSend.append("discount", formData.discount);
-      if (image) {
-        image.forEach((image) => {
-          formDataToSend.append("images", image);
-        });
-      }
 
       const response = await fetch(`/api/products/update/${id}`, {
         method: "PUT",

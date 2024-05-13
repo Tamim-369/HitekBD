@@ -37,7 +37,7 @@ const Product = ({ getOneProduct }) => {
           <Loader />
         </div>
       ) : (
-        <div className="flex flex-col justify-center items-center min-h-screen">
+        <div className="flex flex-col  items-center min-h-screen">
           <section className="text-gray-600 body-font overflow-hidden ">
             <div className=" sm:container  px-4 md:px-20  pt-5 mx-auto">
               <div className="w-full mx-auto flex  flex-wrap items-center">
