@@ -48,7 +48,7 @@ const Product = ({ getOneProduct }) => {
                         product.images.map((image, index) => (
                           <img
                             key={index}
-                            className="w-full  sm:my-1 h-full rounded-md  bg-white mx-2 sm:mx-0 object-contain object-center cursor-pointer"
+                            className="w-full  sm:my-1 h-full rounded-md  bg-white mx-2 sm:mx-0 object-cover object-center cursor-pointer"
                             src={image}
                             onClick={() => setMainImg(image)}
                           />
