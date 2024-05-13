@@ -22,20 +22,24 @@ export const getAllProducts = async (req, res) => {
 export const createProduct = async (req, res) => {
   try {
     const { name, description, price, category, discount } = req.body;
-    const file = req.file; // Access uploaded file
+    const files = req.files; // Access uploaded files
 
-    if (!name || !description || !price || !category || !file) {
+    if (!name || !description || !price || !category || !files) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // Upload file to Cloudinary and make it square
-    const img = await cloudinary.uploader.upload(file.path, {
-      folder: "products",
-      width: 500, // Set the width and height to make the image square
-      height: 500,
-      crop: "fill",
-    });
-    const imgUrl = img.secure_url;
+    // Upload files to Cloudinary
+    const imgUrls = await Promise.all(
+      files.map(async (file) => {
+        const img = await cloudinary.uploader.upload(file.path, {
+          folder: "products",
+          width: 500, // Set the width and height to make the image square
+          height: 500,
+          crop: "fill",
+        });
+        return img.secure_url;
+      })
+    );
 
     const newProduct = new Product({
       name,
@@ -43,7 +47,7 @@ export const createProduct = async (req, res) => {
       price,
       discount,
       category,
-      image: imgUrl,
+      images: imgUrls, // Assuming your product model has an array field for images
     });
 
     await newProduct.save();
@@ -83,7 +87,7 @@ export const updateProduct = async (req, res) => {
   try {
     const productId = req.params.id;
     const { name, description, price, category, discount } = req.body;
-    const file = req.file;
+    const files = req.files;
 
     if (!productId) {
       return res.status(400).json({ message: "Product ID is required" });
@@ -101,17 +105,21 @@ export const updateProduct = async (req, res) => {
     if (category) product.category = category;
     if (discount) product.discount = discount;
 
-    // If a new image file is uploaded, update the image URL and make it square
-    if (file) {
-      const img = await cloudinary.uploader.upload(file.path, {
-        folder: "products",
-        width: 500, // Set the width and height to make the image square
-        height: 500,
-        crop: "fill",
-      });
-      const imgUrl = img.secure_url;
-      product.image = imgUrl;
-    }
+    // If new images are uploaded, upload them to Cloudinary
+    const imgUrls = await Promise.all(
+      files.map(async (file) => {
+        const img = await cloudinary.uploader.upload(file.path, {
+          folder: "products",
+          width: 500, // Set the width and height to make the image square
+          height: 500,
+          crop: "fill",
+        });
+        return img.secure_url;
+      })
+    );
+
+    // Concatenate the new image URLs with existing ones
+    product.images = imgUrls;
 
     await product.save();
 

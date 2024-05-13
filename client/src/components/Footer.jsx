@@ -13,6 +13,7 @@ const Footer = () => {
       location == "/admin-panel" ||
       location == "/order" ||
       location == "/editProduct" ||
+      location == "/edit-images" ||
       location == "/admin" ? (
         ""
       ) : (

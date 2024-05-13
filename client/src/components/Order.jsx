@@ -98,7 +98,7 @@ const Order = () => {
                     className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
                   >
                     <img
-                      src={product.image}
+                      src={product.images[0]}
                       alt="product-image"
                       className="w-full rounded-lg sm:w-40"
                     />

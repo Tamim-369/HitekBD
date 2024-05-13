@@ -30,6 +30,7 @@ import EditProduct from "./components/EditProduct";
 import Search from "./pages/Search";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import EditImages from "./pages/EditImages";
 
 function App() {
   const getUser = async (email) => {
@@ -114,6 +115,10 @@ function App() {
             <Route
               path="/search"
               element={<Search getAllProducts={getAllProducts} />}
+            />
+            <Route
+              path="/edit-images"
+              element={<EditImages getOneProduct={getOneProduct} />}
             />
           </Routes>
           <Footer />

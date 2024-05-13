@@ -30,7 +30,7 @@ const ProductCard = ({ product, hide }) => {
         <img
           alt="ecommerce"
           className={`h-full  w-full object-cover 2xs:object-cover  object-center block bg-gradient-to-tl from-gray-400 to-gray-200 `}
-          src={`${product.image}`}
+          src={`${product.images[0]}`}
         />
       </Link>
       <div className="mt-4 flex flex-col  ">

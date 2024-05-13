@@ -32,6 +32,7 @@ const Navbar = () => {
     checkLocation == "/admin-panel" ||
     checkLocation == "/admin-auth" ||
     checkLocation == "/editProduct" ||
+    checkLocation == "/edit-images" ||
     checkLocation == "/order"
   ) {
     return null;

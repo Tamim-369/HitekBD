@@ -6,6 +6,9 @@ import { FaPlus, FaMinus } from "react-icons/fa";
 import { ShopContext } from "../context/shop-context";
 import RecomendProduct from "../components/RecomendProduct";
 import "../image-scroll.css";
+import "react-toastify/dist/ReactToastify.css";
+
+import { toast } from "react-toastify";
 const Product = ({ getOneProduct }) => {
   const [product, setProduct] = useState({});
   const location = useLocation();
@@ -20,6 +23,8 @@ const Product = ({ getOneProduct }) => {
       setLoading(true);
       const foundProduct = await getOneProduct(productId);
       setProduct(foundProduct);
+      console.log(foundProduct);
+      setMainImg(foundProduct.images[0]);
       setLoading(false);
     })();
   }, []);
@@ -39,31 +44,15 @@ const Product = ({ getOneProduct }) => {
                 <div className="lg:w-1/2 my-5 w-full  sm:h-full  flex flex-col-reverse sm:flex-row object-scale-down object-center rounded">
                   <div className="w-full sm:ml-4 flex sm:flex-row flex-col-reverse">
                     <div className="flex sm:flex-col sm:mr-4 md:mr-2 sm:h-96  sm:w-32  my-auto image-scroll overflow-x-auto sm:overflow-y-auto sm:border-r-2 border-r-2 border-l-2 sm:border-l-0  border-gray-300  h-32 w-full bg-gray-200 py-4 sm:py-2 sm:px-1  px-2">
-                      <img
-                        className="w-full  sm:my-1 h-full rounded-md  bg-white mx-2 sm:mx-0 object-contain object-center cursor-pointer"
-                        src={product.image}
-                        onClick={() => setMainImg(product.image)}
-                      />
-                      <img
-                        className="w-full  sm:my-1 h-full rounded-md  bg-white mx-2 sm:mx-0 object-contain object-center cursor-pointer"
-                        src={product.image}
-                        onClick={() => setMainImg(product.image)}
-                      />
-                      <img
-                        className="w-full  sm:my-1 h-full rounded-md  bg-white mx-2 sm:mx-0 object-contain object-center cursor-pointer"
-                        src={product.image}
-                        onClick={() => setMainImg(product.image)}
-                      />
-                      <img
-                        className="w-full  sm:my-1 h-full rounded-md  bg-white mx-2 sm:mx-0 object-contain object-center cursor-pointer"
-                        src={product.image}
-                        onClick={() => setMainImg(product.image)}
-                      />
-                      <img
-                        className="w-full  sm:my-1 h-full rounded-md  bg-white mx-2 sm:mx-0 object-contain object-center cursor-pointer"
-                        src={product.image}
-                        onClick={() => setMainImg(product.image)}
-                      />
+                      {product.images &&
+                        product.images.map((image, index) => (
+                          <img
+                            key={index}
+                            className="w-full  sm:my-1 h-full rounded-md  bg-white mx-2 sm:mx-0 object-contain object-center cursor-pointer"
+                            src={image}
+                            onClick={() => setMainImg(image)}
+                          />
+                        ))}
                     </div>
                     <div className="my-auto h-96">
                       <ImageMagnifier
@@ -95,8 +84,14 @@ const Product = ({ getOneProduct }) => {
                   <div className="flex pb-10 lg:pb-0">
                     <div className="flex flex-1 items-center w-full mx-auto justify-center ">
                       <button
-                        onClick={() => removeFromCart(product._id)}
+                        onClick={() => {
+                          removeFromCart(product._id);
+                          if (cartItems[product._id] < 2) {
+                            toast.warning(`Removed ${product.name} from cart`);
+                          }
+                        }}
                         className="group rounded-l-full px-3 py-[9px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white text-black"
+                        disabled={cartItems[product._id] < 1}
                       >
                         <FaMinus />
                       </button>
@@ -106,7 +101,12 @@ const Product = ({ getOneProduct }) => {
                         type="number"
                       />
                       <button
-                        onClick={() => addToCart(product._id)}
+                        onClick={() => {
+                          addToCart(product._id);
+                          if (cartItems[product._id] < 1) {
+                            toast.success(`Added ${product.name} to cart`);
+                          }
+                        }}
                         className="group rounded-r-full px-3 py-[9px] border border-gray-200 flex items-center justify-center shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50 text-black"
                       >
                         <FaPlus />
@@ -118,6 +118,9 @@ const Product = ({ getOneProduct }) => {
                         onClick={() => {
                           setAddedProducts(false);
                           addToCart(product._id);
+                          if (cartItems[product._id] < 1) {
+                            toast.success(`Added ${product.name} to cart`);
+                          }
                         }}
                         className="flex ml-auto text-white bg-red-600  shadow-lg border-0 py-2 px-6 focus:outline-none  rounded-lg"
                       >

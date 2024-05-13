@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 
 const EditProduct = () => {
   const location = useLocation();
@@ -8,7 +8,7 @@ const EditProduct = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState();
+  const [image, setImage] = useState([]);
 
   useEffect(() => {
     // Fetch product data based on the ID when the component mounts
@@ -20,6 +20,7 @@ const EditProduct = () => {
         }
         const productData = await response.json();
         setFormData(productData);
+        setImage(productData.images);
       } catch (error) {
         console.error("Error fetching product data:", error);
         // Handle error (e.g., display error message, redirect to error page)
@@ -55,7 +56,11 @@ const EditProduct = () => {
       formDataToSend.append("category", formData.category);
       formDataToSend.append("description", formData.description);
       formDataToSend.append("discount", formData.discount);
-      if (formData.image) formDataToSend.append("image", formData.image);
+      if (image) {
+        image.forEach((image) => {
+          formDataToSend.append("images", image);
+        });
+      }
 
       const response = await fetch(`/api/products/update/${id}`, {
         method: "PUT",
@@ -75,11 +80,21 @@ const EditProduct = () => {
     }
   };
   return (
-    <div className="w-11/12 mx-auto mt-24 mb-10">
+    <div className="w-11/12 mx-auto mb-10 min-h-screen">
       <h1 className="text-2xl font-semibold">Upload Product</h1>
+      {/* <p className="text-base  mt-2 mb-2">
+        Click{" "}
+        <Link
+          to={`/edit-images?id=${formData._id}`}
+          className=" text-red-700 font-bold border-b-2 border-red-700 px-1"
+        >
+          Edit Images
+        </Link>{" "}
+        to edit product images
+      </p> */}
       <form
         onSubmit={handleSubmit}
-        className="w-full flex flex-col justify-center items-center gap-2 mt-3"
+        className="w-full flex flex-col justify-center items-center gap-2 mt-1"
       >
         <div className="flex w-full md:flex-row flex-col md:gap-4">
           <div className="w-full mb-3 ">
@@ -97,23 +112,6 @@ const EditProduct = () => {
               id="name"
               className="p-3 mt-2 placeholder:font-medium bg-gray-50 border-b-2 focus:outline-none border-gray-900 w-full"
               placeholder="Product Name"
-            />
-          </div>
-          <div className="w-full mb-3 ">
-            <label
-              htmlFor="image"
-              className="text-xl font-medium text-gray-900 "
-            >
-              Enter Product Image
-            </label>
-            <input
-              type="file"
-              name="image"
-              onChange={handleImageChange}
-              //   value={formData.image}
-              id="image"
-              className="p-1 mt-2 placeholder:font-medium bg-gray-50 border-b-2 focus:outline-none border-gray-900 w-full file:bg-gray-900 file:shadow-lg file:cursor-pointer file:text-white file:border-none file:p-2 file:rounded-md"
-              placeholder="Product Image"
             />
           </div>
         </div>
@@ -171,6 +169,7 @@ const EditProduct = () => {
             placeholder="Product discount"
           />
         </div>
+
         <div className="w-full mb-3">
           <label
             htmlFor="description"
@@ -187,13 +186,24 @@ const EditProduct = () => {
             placeholder="Product description"
           ></textarea>
         </div>
-        <button
-          type="submit"
-          className="bg-gray-950 text-white p-3  rounded-lg"
-          disabled={loading}
-        >
-          Upload Product {loading && "Loading..."}
-        </button>
+        <div className="flex gap-2">
+          <button
+            type="submit"
+            className="bg-gray-950 text-white p-3  rounded-lg"
+            disabled={loading}
+          >
+            Update Product {loading && "Loading..."}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              navigate(-1);
+            }}
+            className="bg-gray-500 text-white p-3  rounded-lg"
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );

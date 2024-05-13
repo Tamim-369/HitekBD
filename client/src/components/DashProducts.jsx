@@ -95,7 +95,7 @@ const DashProducts = () => {
                       <div className="flex justify-center items-center gap-2">
                         <div className="">
                           <Link
-                            to={`/order?id=${product._id}`}
+                            to={`/product?id=${product._id}`}
                             className="text-sm flex justify-center items-center  text-white rounded-full"
                           >
                             <svg

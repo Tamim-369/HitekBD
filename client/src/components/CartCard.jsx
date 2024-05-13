@@ -16,7 +16,7 @@ const CartCard = ({
             <img
               alt=""
               className="rounded-xl h-full w-full"
-              src={product.image}
+              src={product.images[0]}
             />
           </div>
           <div className="pro-data w-full max-w-sm ">
