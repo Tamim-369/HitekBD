@@ -17,22 +17,24 @@ const ProductCard = ({ product, hide }) => {
         location === "/" || location === "/#latest" ? "my-auto " : "md:my-3"
       }  p-2  xs:p-1 mx-auto  w-full xs:w-full sm:w-full md:w-full  bg-transparent  rounded-xl`}
     >
-      <Link
-        to={`/product?id=${product._id}`}
+      <div
+        onClick={() => {
+          window.location.href = `/product?id=${product._id}`;
+        }}
         className={`block ${
           location == "/" || location == "/#latest"
             ? "  rounded-xl duration-300 "
             : ""
         } relative  ${
           location === "/product" ? "h-56 " : "h-full sm:w-auto w-full"
-        }  overflow-hidden rounded-xl`}
+        }  overflow-hidden rounded-xl cursor-pointer`}
       >
         <img
           alt="ecommerce"
           className={`h-full  w-full object-cover 2xs:object-cover  object-center block bg-gradient-to-tl from-gray-400 to-gray-200 `}
           src={`${product.images[0]}`}
         />
-      </Link>
+      </div>
       <div className="mt-4 flex flex-col  ">
         <h3 className="text-gray-500  text-xs xs:text-xs  tracking-widest title-font mb-1">
           {product.category}
