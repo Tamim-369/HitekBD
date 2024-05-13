@@ -35,21 +35,21 @@ const ProductCard = ({ product, hide }) => {
           src={`${product.images[0]}`}
         />
       </div>
-      <div className="mt-4 flex flex-col  ">
-        <h3 className="text-gray-500  text-xs xs:text-xs  tracking-widest title-font mb-1">
+      <div className="mt-4 flex flex-col justify-center sm:items-start items-center ">
+        <h3 className="text-gray-500 sm:block hidden  text-xs xs:text-xs  tracking-widest title-font mb-1">
           {product.category}
         </h3>
-        <h2 className="text-gray-900 font-bold  title-font text-sm  xs:text-lg xs:font-semibold  ">
+        <h2 className="text-gray-900 font-bold  title-font text-base  xs:text-lg xs:font-semibold  ">
           {product.name}
         </h2>
-        <p className="text-sm xs:text-sm sm:text-base">
-          {product.description.slice(0, 70)}...
+        <p className="text-base xs:text-base sm:text-left text-center sm:text-base">
+          {product.description.slice(0, 85)}...
         </p>
         <div className="text-xs xs:text-sm mt-2">
           {" "}
           {product.discount > 0 ? (
-            <div className="text-xs">
-              <div className="flex gap-2 justify-start items-center">
+            <div className="text-xs text-center sm:text-left">
+              <div className="flex gap-2 sm:justify-start justify-center items-center">
                 <del className="text-gray-500 font-mono font-semibold">
                   ৳{product.price}
                 </del>{" "}
@@ -66,7 +66,7 @@ const ProductCard = ({ product, hide }) => {
             <>৳{product.price}</>
           )}
         </div>
-        <div className="flex xs:mt-2 flex-col justify-center w-11/12  gap-2 md:flex-row xs:justify-between xs:items-start ">
+        <div className="flex xs:mt-2 flex-col justify-center w-11/12 mx-auto mt-2 sm:mx-0  gap-2 sm:flex-row xs:justify-between xs:items-center ">
           {cartItems[product._id] > 0 && (
             <div className={`flex justify-center items-center`}>
               <button
@@ -94,7 +94,7 @@ const ProductCard = ({ product, hide }) => {
             </div>
           )}
 
-          <div className="flex  items-center  ">
+          <div className="flex  items-center justify-center  ">
             {" "}
             <button
               onClick={() => {
