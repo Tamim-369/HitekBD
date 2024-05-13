@@ -26,7 +26,7 @@ const Hero = () => {
       <div className="sm:h-[60vh] h-[75vh] my-auto md:bg-inherit ">
         <div className="bg-transparent flex  sm:mt-20 md:mt-20  md:w-10/12 mx-auto md:flex-row flex-col justify-center flex-wrap md:flex-nowrap items-center">
           <div className="hero w-full flex flex-col justify-center items-center   box-border p-10 md:flex-1 ">
-            <div className="hero-content mx-auto md:w-full sm:pt-0 pt-96 text-center sm:w-10/12 md:text-left md:justify-start items-center justify-center  md:mt-0 mt-10 absolute md:relative z-10 md:z-auto flex-col lg:flex-row-reverse">
+            <div className="hero-content mx-auto md:w-full sm:pt-0 pt-80 text-center sm:w-10/12 md:text-left md:justify-start items-center justify-center  md:mt-0 mt-10 absolute md:relative z-10 md:z-auto flex-col lg:flex-row-reverse">
               <div className="w-[94%] mx-auto mt-10 sm:h-auto h-full  md:w-[100%] sm:mt-0">
                 <h1 className="lg:text-4xl text-3xl font-semibold text-red-600  gap-3 ">
                   Welcome to <b className="text-red-600">Hitekbd</b>
@@ -35,8 +35,11 @@ const Hero = () => {
                   Get the gadgets exclusive features in affordable price. We
                   provide best quality products.
                 </p>
-                <Link to="/products">
-                  <Button type="button" round={"lg"} text="Shop Now" />
+                <Link
+                  to="/products"
+                  className="p-[0.6rem] shadow-md text-white bg-red-600 rounded-lg text-lg"
+                >
+                  Shop Now
                 </Link>
               </div>
             </div>
