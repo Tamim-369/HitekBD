@@ -143,9 +143,6 @@ const Product = ({ getOneProduct }) => {
             </div>
           </section>
           <section className="recomended flex flex-col justify-center items-center bg-white mt-5">
-            <h1 className="text-2xl font-bold text-gray-900 mt-4 mb-2 ">
-              Suggested
-            </h1>
             <RecomendProduct
               id={product._id}
               category={product.category}

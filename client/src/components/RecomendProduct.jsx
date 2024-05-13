@@ -17,16 +17,28 @@ const RecomendProduct = ({ category, discount, id }) => {
   useEffect(() => {
     getAllProducts();
   }, []);
+
   return (
-    <div className="grid grid-cols-1  xs:grid-cols-2 md:grid-cols-3 smd:grid-cols-4 gap-5 w-11/12 mx-auto mb-10">
-      {recomended.map((product) => {
-        let hide = false;
-        if (product._id == id) {
-          hide = true;
-        }
-        return <ProductCard key={product._id} hide={hide} product={product} />;
-      })}{" "}
-    </div>
+    <>
+      {recomended.length > 1 && (
+        <>
+          <h1 className="text-2xl font-bold text-gray-900 mt-4 mb-2 ">
+            Suggested
+          </h1>
+          <div className="grid grid-cols-1  xs:grid-cols-2 md:grid-cols-3 smd:grid-cols-4 gap-5 w-11/12 mx-auto mb-10">
+            {recomended.map((product) => {
+              let hide = false;
+              if (product._id == id) {
+                hide = true;
+              }
+              return (
+                <ProductCard key={product._id} hide={hide} product={product} />
+              );
+            })}{" "}
+          </div>
+        </>
+      )}
+    </>
   );
 };
 
