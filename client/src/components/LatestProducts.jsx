@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import Button from "./Button";
 import { Link, useLocation } from "react-router-dom";
-
+import Loader from "./Loader";
 const LatestProducts = ({ getAllProducts }) => {
   const location = useLocation();
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchAllProducts = async () => {
+      setLoading(true);
       try {
         // Assuming getAllProducts is a function that fetches all products
         const allProducts = await getAllProducts();
@@ -15,8 +17,10 @@ const LatestProducts = ({ getAllProducts }) => {
         const latestProducts = sortedProducts.slice(0, 5);
 
         setProducts(latestProducts);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching products:", error);
+        setLoading(false);
       }
     };
 
@@ -31,6 +35,13 @@ const LatestProducts = ({ getAllProducts }) => {
       }
     }
   }, [location.hash]);
+  if (loading) {
+    return (
+      <div className="w-full h-full mt-10 flex justify-center items-center">
+        <Loader />
+      </div>
+    );
+  }
   return (
     <div>
       <div className=" bg-white w-full mx-auto flex flex-col justify-center items-center">
@@ -43,9 +54,11 @@ const LatestProducts = ({ getAllProducts }) => {
         >
           <div className="container px-5 py-8 w-full mx-auto flex flex-col justify-center items-center">
             <div className="grid lg:grid-cols-3 w-full sm:grid-cols-2 grid-cols-1 gap-4 -m-4  justify-center items-start">
-              {products.map((product) => (
-                <ProductCard product={product} />
-              ))}
+              {products.map((product, index) => {
+                if (index < 3) {
+                  return <ProductCard product={product} />;
+                }
+              })}
             </div>
             <div className="text-center mt-10">
               <Link to="/products">

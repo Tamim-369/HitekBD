@@ -9,7 +9,7 @@ const ProductCard = ({ product, hide }) => {
   const { addToCart, removeFromCart, cartItems } = useContext(ShopContext);
   // false should be replaced by the product id
   const location = useLocation().pathname;
-  console.log(product.discount);
+  // console.log(product.discount);
 
   return (
     <div
