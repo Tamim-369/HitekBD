@@ -2,7 +2,9 @@ import Stripe from "stripe";
 import express from "express";
 
 const router = express.Router();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(
+  "sk_test_51PtJXn2MxCzWAMPulz63fAFcjdW9Rd7uLdlV0duKePnkZmqumegX9GpgFc7T8jVuizyXLqFfoZfvwPI3qmdTDTcP004mcIm0qJ"
+);
 
 router.post("/createCheckOutSession", async (req, res) => {
   const { products } = req.body;
