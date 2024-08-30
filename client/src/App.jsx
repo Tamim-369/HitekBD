@@ -31,7 +31,8 @@ import Search from "./pages/Search";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EditImages from "./pages/EditImages";
-
+import SuccessPage from "./pages/SuccessPage";
+import ErrorPage from "./pages/errorPage";
 function App() {
   const getUser = async (email) => {
     const response = await fetch(`/api/users/find/${email}`, {
@@ -120,7 +121,10 @@ function App() {
               path="/edit-images"
               element={<EditImages getOneProduct={getOneProduct} />}
             />
+            <Route path="/success" element={<SuccessPage />} />
+            <Route path="/error" element={<ErrorPage />} />
           </Routes>
+
           <Footer />
         </ShopContextProvider>
       </BrowserRouter>

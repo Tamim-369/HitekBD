@@ -9,6 +9,8 @@ function generateToken(payload) {
 }
 
 export const createUser = async (req, res, next) => {
+  await connect();
+
   const { name, phoneNumber, email, password, city, state, street } = req.body;
   if (
     !name ||
@@ -66,6 +68,8 @@ export const createUser = async (req, res, next) => {
   }
 };
 export const verifyUser = async (req, res, next) => {
+  await connect();
+
   // const { token } = req.body;
   const token = req.params.token;
   console.log(token);
@@ -95,6 +99,8 @@ export const verifyUser = async (req, res, next) => {
   }
 };
 export const getUser = async (req, res, next) => {
+  await connect();
+
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ message: "All fields are required" });
@@ -120,6 +126,8 @@ export const getUser = async (req, res, next) => {
 };
 
 export const findUser = async (req, res) => {
+  await connect();
+
   const email = req.params.email;
   try {
     const user = await User.findOne({ email: email });
@@ -134,6 +142,8 @@ export const findUser = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
+  await connect();
+
   const id = req.params.id;
   const { name, email, phoneNumber, city, state, street } = req.body;
   const user = await User.findById(id);
@@ -155,6 +165,8 @@ export const updateUser = async (req, res) => {
 };
 
 export const resetPassword = async (req, res) => {
+  await connect();
+
   const randomNumber = Math.floor(Math.random() * 900000) + 100000;
   sendEmail(
     process.env.EMAIL,
@@ -171,6 +183,8 @@ export const resetPassword = async (req, res) => {
 };
 
 export const verifyCode = async (req, res) => {
+  await connect();
+
   const code = req.body.code;
   const hashedCode = await bcryptjs.compare(code, req.query.code);
   if (!hashedCode) {
@@ -180,6 +194,8 @@ export const verifyCode = async (req, res) => {
 };
 
 export const resetPasswordFinish = async (req, res) => {
+  await connect();
+
   const { password } = req.body;
   const hashedPassword = await bcryptjs.hash(password, 10);
   const user = await User.findOne({ email: req.params.email });
@@ -196,6 +212,8 @@ export const resetPasswordFinish = async (req, res) => {
 };
 
 export const getAllUsers = async (req, res) => {
+  await connect();
+
   const users = await User.find({});
   if (users) {
     return res.status(200).json(users);

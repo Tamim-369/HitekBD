@@ -6,6 +6,8 @@ const discountedPrice = (mainPrice, discount) => {
   return mainPrice - (mainPrice * discount) / 100;
 };
 export const createOrder = async (req, res) => {
+  await connect();
+
   const {
     products,
     userId,
@@ -68,6 +70,8 @@ export const createOrder = async (req, res) => {
 };
 
 export const getOneOrder = async (req, res) => {
+  await connect();
+
   const id = req.params.id;
   const order = await Order.findById(id);
   if (!order) {
@@ -76,6 +80,8 @@ export const getOneOrder = async (req, res) => {
   res.status(200).json(order);
 };
 export const getOrder = async (req, res) => {
+  await connect();
+
   const id = req.params.id;
   const order = await Order.find({ userId: id });
   if (!order) {
@@ -85,6 +91,8 @@ export const getOrder = async (req, res) => {
 };
 
 export const getAllOrder = async (req, res) => {
+  await connect();
+
   const id = req.params.id;
   const order = await Order.find({});
   if (!order) {
@@ -94,6 +102,8 @@ export const getAllOrder = async (req, res) => {
 };
 
 export const changeOrderStatus = async (req, res) => {
+  await connect();
+
   const id = req.params.id;
   const order = await Order.findById(id);
   if (!order) {

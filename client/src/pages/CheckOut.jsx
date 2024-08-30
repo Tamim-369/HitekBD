@@ -155,64 +155,43 @@ const CheckOut = () => {
                       name="phoneNumber"
                       required
                     />
-                    <div className="flex gap-2 flex-row sm:flex-col    sm:justify-between  w-full lg:w-10/12  ">
-                      <div className="relative w-full  sm:w-7/12 flex items-center">
-                        <input
-                          type="radio"
-                          value="nagad"
-                          id="nagad"
-                          name="paymentMethod"
-                          onChange={handleChange}
-                          checked={formData?.paymentMethod === "nagad"}
-                          required
-                        />
-                        <label
-                          htmlFor="nagad"
-                          className="pl-2 cursor-pointer text-black  peer-disabled:cursor-not-allowed peer-disabled:text-slate-400 flex justify-center items-center"
-                        >
-                          <div className="btn flex  justify-center items-center ">
-                            <img src="/Nagad.png" className="h-6" alt="" />
-                            <span className="font-semibold">Nagad</span>
-                          </div>
-                        </label>
-                      </div>
-                      <div className="relative w-full  sm:w-7/12 flex items-center">
-                        <input
-                          type="radio"
-                          id="bkash"
-                          value="bkash"
-                          name="paymentMethod"
-                          onChange={handleChange}
-                          checked={formData?.paymentMethod === "bkash"}
-                          required
-                        />
-                        <label
-                          htmlFor="bkash"
-                          className="pl-2 cursor-pointer text-black  peer-disabled:cursor-not-allowed peer-disabled:text-slate-400 flex justify-center items-center"
-                        >
-                          <div className="btn flex justify-center items-center ">
-                            <img src="/bkash.png" className="h-6" alt="" />
-                            <span className="font-semibold ml-1">bKash</span>
-                          </div>
-                        </label>
-                      </div>
+
+                    <div className="relative w-full  sm:w-7/12 flex items-center">
+                      <input
+                        type="radio"
+                        id="bkash"
+                        value="bkash"
+                        name="paymentMethod"
+                        onChange={handleChange}
+                        checked={formData?.paymentMethod === "bkash"}
+                        required
+                      />
+                      <label
+                        htmlFor="bkash"
+                        className="pl-2 cursor-pointer text-black  peer-disabled:cursor-not-allowed peer-disabled:text-slate-400 flex justify-center items-center"
+                      >
+                        <div className="btn flex justify-center items-center ">
+                          <img src="/bkash.png" className="h-6" alt="" />
+                          <span className="font-semibold ml-1">bKash</span>
+                        </div>
+                      </label>
                     </div>
                   </div>
-                  <div className="flex mt-6 justify-between items-center"></div>
-                  <div className="flex gap-6 max-sm:flex-col mt-5">
-                    <button
-                      type="button"
-                      className="rounded-md px-6 py-3 w-full text-sm font-semibold  bg-gray-800/10   text-[#2c2c2c]"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="rounded-md px-6 py-3 w-full text-sm font-semibold bg-[#ff2020] text-white hover:bg-[#ff2020]"
-                    >
-                      Submit Order
-                    </button>
-                  </div>
+                </div>
+                <div className="flex mt-6 justify-between items-center"></div>
+                <div className="flex gap-6 max-sm:flex-col mt-5">
+                  <button
+                    type="button"
+                    className="rounded-md px-6 py-3 w-full text-sm font-semibold  bg-gray-800/10   text-[#2c2c2c]"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="rounded-md px-6 py-3 w-full text-sm font-semibold bg-[#ff2020] text-white hover:bg-[#ff2020]"
+                  >
+                    Submit Order
+                  </button>
                 </div>
               </form>
             </div>

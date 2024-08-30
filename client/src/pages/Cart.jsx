@@ -2,25 +2,57 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ShopContext } from "../context/shop-context";
 import CartCard from "../components/CartCard";
+import { loadStripe } from "@stripe/stripe-js";
+
 const Cart = ({ getOneProduct, getAllProducts }) => {
   const navigate = useNavigate();
-
   const [allItems, setAllItems] = useState([]);
+
   useEffect(() => {
     (async () => {
       const data = await getAllProducts();
       setAllItems(data);
     })();
   }, []);
+
   const {
     addToCart,
     cartItems,
     removeFromCart,
     updateCartItemAmount,
-
     getTotalCartAmount,
   } = useContext(ShopContext);
+
   const totalAmount = getTotalCartAmount();
+
+  const makePayment = async () => {
+    const stripe = await loadStripe(
+      "pk_test_51PtJXn2MxCzWAMPurkk8aPzb9QMWR8gYNWkbuaz7ZJ4FkdgeYARIMpkigoNabaXixOYvO9M5DSmNc2GcvEsZKIIx00Lc9XK6gj"
+    );
+    const body = {
+      products: Object.keys(cartItems).map((productId) => ({
+        name: allItems.find((item) => item._id === productId).name,
+        price: allItems.find((item) => item._id === productId).price,
+        quantity: cartItems[productId],
+      })),
+    };
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    const response = await fetch("/api/pay/createCheckOutSession", {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    });
+    const session = await response.json();
+    const result = await stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
+    if (result.error) {
+      console.error(result.error.message);
+    }
+  };
+
   return (
     <>
       <div>
@@ -80,12 +112,12 @@ const Cart = ({ getOneProduct, getAllProducts }) => {
                 >
                   Continue Shopping
                 </button>
-                <Link
-                  to={"/checkout"}
+                <button
+                  onClick={makePayment}
                   className="rounded-lg p-3 text-center justify-center items-center bg-red-600 font-semibold text-sm text-white flex transition-all duration-500 hover:bg-red-700"
                 >
                   Checkout
-                </Link>
+                </button>
               </div>
             ) : (
               <h1>Your Cart is empty</h1>

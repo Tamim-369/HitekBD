@@ -1,12 +1,14 @@
 import Product from "../model/product.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import multer from "multer";
+import { connect } from "../utils/connect.js";
 
 // Multer configuration
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 export const getAllProducts = async (req, res) => {
+  await connect();
   try {
     const products = await Product.find({});
     if (!products) {
@@ -20,6 +22,8 @@ export const getAllProducts = async (req, res) => {
 };
 
 export const createProduct = async (req, res) => {
+  await connect();
+
   try {
     const { name, description, price, category, discount } = req.body;
     const files = req.files; // Access uploaded files
@@ -61,6 +65,8 @@ export const createProduct = async (req, res) => {
 };
 
 export const getOneProduct = async (req, res) => {
+  await connect();
+
   try {
     const id = req.params.id;
     const product = await Product.findById(id);
@@ -75,6 +81,8 @@ export const getOneProduct = async (req, res) => {
 };
 
 export const deleteProduct = async (req, res) => {
+  await connect();
+
   const id = req.params.id;
   const product = await Product.findByIdAndDelete(id);
   if (!product) {
@@ -84,6 +92,8 @@ export const deleteProduct = async (req, res) => {
 };
 
 export const updateProduct = async (req, res) => {
+  await connect();
+
   try {
     const productId = req.params.id;
     const { name, description, price, category, discount } = req.body;

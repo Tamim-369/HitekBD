@@ -1,4 +1,6 @@
-export const getAdmin = (req, res) => {
+export const getAdmin = async (req, res) => {
+  await connect();
+
   if (req.query.password === process.env.ADMIN_PASSWORD) {
     if (req.query.name === process.env.ADMIN_NAME) {
       const session_number = Math.floor(Math.random() * 900000) + 100000;
