@@ -38,6 +38,8 @@ const Cart = ({ getOneProduct, getAllProducts }) => {
     };
     const headers = {
       "Content-Type": "application/json",
+      Authorization:
+        "Bearer sk_test_51PtJXn2MxCzWAMPulz63fAFcjdW9Rd7uLdlV0duKePnkZmqumegX9GpgFc7T8jVuizyXLqFfoZfvwPI3qmdTDTcP004mcIm0qJ",
     };
     const response = await fetch("/api/pay/createCheckOutSession", {
       method: "POST",
